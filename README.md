@@ -13,8 +13,7 @@ Sin contraseñas, sin extensiones y sin que tus datos salgan de tu dispositivo.
 ![Tests](https://img.shields.io/badge/tests-Vitest-6e9f18?logo=vitest&logoColor=white)
 ![Licencia](https://img.shields.io/badge/licencia-MIT-green)
 
-<!-- Sustituye el enlace por tu URL de Vercel cuando despliegues -->
-[**Probar la demo →**](https://ghost-radar.vercel.app)
+[**Probar la demo →**](https://ghost-radar-rrss.vercel.app)
 
 <img src="docs/img/inicio.jpg" width="720" alt="Pantalla de inicio de ghost.radar">
 
