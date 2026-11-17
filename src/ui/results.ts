@@ -1,6 +1,7 @@
 import type { Network } from '../../shared/types';
 import { NETWORK_CONFIG } from '../config/networks';
 import { filterAndSort, label } from '../core/compare';
+import { ageInDays, STALE_AFTER_DAYS } from '../core/parse';
 import type { Account, Comparison } from '../core/types';
 import { byId, countUp, externalIcon, h } from './dom';
 
@@ -52,7 +53,7 @@ export class ResultsView {
     this.copyBtn.addEventListener('click', () => void this.copy());
   }
 
-  show(data: Comparison, network: Network): void {
+  show(data: Comparison, network: Network, exportedAt: number | null = null): void {
     this.data = data;
     this.network = network;
     this.search.value = '';
@@ -60,6 +61,8 @@ export class ResultsView {
     section.classList.remove('hidden');
     byId('resLabel').textContent = `Tus resultados en ${NETWORK_CONFIG[network].name}`;
     byId('xHint').classList.toggle('hidden', network !== 'x');
+    byId('gone').classList.toggle('hidden', network === 'x');
+    this.showDataAge(exportedAt);
 
     countUp(byId('sFollowers'), data.followers.size);
     countUp(byId('sFollowing'), data.following.size);
@@ -79,6 +82,23 @@ export class ResultsView {
     }
     this.select('notFollowingBack');
     setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+
+  private showDataAge(exportedAt: number | null): void {
+    const el = byId('dataAge');
+    if (!exportedAt) {
+      el.classList.add('hidden');
+      return;
+    }
+    const days = ageInDays(exportedAt);
+    const when = days === 0 ? 'hoy' : days === 1 ? 'ayer' : `hace ${days} días (${fmtDate(exportedAt)})`;
+    el.textContent = '';
+    el.append(h('b', {}, `Datos exportados ${when}.`));
+    if (days >= STALE_AFTER_DAYS) {
+      el.append(' Desde entonces algunas cuentas pueden haber cambiado de nombre. Descarga unos datos nuevos para resultados exactos.');
+    }
+    el.classList.toggle('stale', days >= STALE_AFTER_DAYS);
+    el.classList.remove('hidden');
   }
 
   hide(): void {

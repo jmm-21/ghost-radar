@@ -21,6 +21,8 @@ export interface RawLists {
 export interface TextFile {
   path: string;
   text: string;
+  /** Fecha del archivo (del .zip o del sistema), en ms. Sirve para saber lo antiguos que son los datos. */
+  date?: number;
 }
 
 export interface Comparison {

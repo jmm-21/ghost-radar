@@ -164,3 +164,19 @@ export function detectNetwork(lists: RawLists): Network | null {
   if (src === 'tiktok') return 'tiktok';
   return null;
 }
+
+/** Fecha más reciente de los archivos de seguidores/seguidos (≈ fecha de la exportación). */
+export function exportDate(files: TextFile[]): number | null {
+  const dates = files
+    .filter((f) => classify([basename(f.path)]) !== null || /user_data|tiktok/i.test(f.path))
+    .map((f) => f.date ?? 0)
+    .filter((d) => d > 0);
+  return dates.length ? Math.max(...dates) : null;
+}
+
+export const STALE_AFTER_DAYS = 7;
+
+/** Días completos desde la exportación. */
+export function ageInDays(date: number, now = Date.now()): number {
+  return Math.max(0, Math.floor((now - date) / 864e5));
+}

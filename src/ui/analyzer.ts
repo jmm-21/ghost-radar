@@ -3,7 +3,7 @@ import { NETWORK_CONFIG } from '../config/networks';
 import { readUploads } from '../core/archive';
 import { compare } from '../core/compare';
 import { demoLists } from '../core/demo';
-import { detectNetwork, parseFiles } from '../core/parse';
+import { detectNetwork, exportDate, parseFiles } from '../core/parse';
 import type { RawLists } from '../core/types';
 import { trackEvent } from '../services/api';
 import { byId, externalIcon, h } from './dom';
@@ -105,13 +105,13 @@ export class Analyzer {
     this.setStatus('Analizando…');
     try {
       const textFiles = await readUploads(files, this.network);
-      this.finish(parseFiles(textFiles), true);
+      this.finish(parseFiles(textFiles), true, exportDate(textFiles));
     } catch (err) {
       this.setStatus(`No he podido abrir el archivo: ${(err as Error).message}`, true);
     }
   }
 
-  private finish(lists: RawLists, real: boolean): void {
+  private finish(lists: RawLists, real: boolean, date: number | null = null): void {
     if (!lists.followers.length || !lists.following.length) {
       const missing = [!lists.followers.length && 'tus seguidores', !lists.following.length && 'tus seguidos']
         .filter(Boolean)
@@ -127,7 +127,7 @@ export class Analyzer {
     if (detected && detected !== this.network) this.setNetwork(detected);
 
     this.setStatus('');
-    this.results.show(compare(lists), this.network);
+    this.results.show(compare(lists), this.network, date);
     if (real) void trackEvent({ type: 'analysis_completed', network: this.network });
   }
 }

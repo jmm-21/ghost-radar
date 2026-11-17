@@ -199,3 +199,14 @@ dialog.fb::backdrop{background:rgba(5,4,10,.7);backdrop-filter:blur(6px)}
 .fb-msg{font-size:.85rem;min-height:1.2em}
 .fb-msg.err{color:#ff7a8a}
 .fb-msg.ok{color:#3ddc97}
+
+/* ---- Antigüedad de los datos y cuentas no disponibles ---- */
+.data-age{margin:0 10px 8px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);font-size:.82rem;color:var(--muted)}
+.data-age b{color:var(--ink);font-weight:600}
+.data-age.stale{background:rgba(255,184,77,.1);border:1px solid rgba(255,184,77,.3);color:#f3d9a8}
+.gone{margin:0 10px 10px;font-size:.82rem;color:var(--muted)}
+.gone summary{cursor:pointer;padding:6px 2px;color:var(--ink);font-weight:600;list-style:none}
+.gone summary::before{content:"ⓘ ";color:var(--a2)}
+.gone summary::-webkit-details-marker{display:none}
+.gone p{margin:6px 2px 8px;line-height:1.5}
+.gone b{color:var(--ink);font-weight:600}

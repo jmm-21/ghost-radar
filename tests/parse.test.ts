@@ -139,3 +139,17 @@ describe('utilidades', () => {
     expect(() => parseFiles([{ path: 'following.json', text: '{roto' }])).not.toThrow();
   });
 });
+
+describe('antigüedad de los datos', () => {
+  it('toma la fecha más reciente de los archivos de seguidores/seguidos', async () => {
+    const { exportDate, ageInDays } = await import('../src/core/parse');
+    const d = exportDate([
+      { path: 'followers_1.json', text: '[]', date: 1000 },
+      { path: 'following.json', text: '{}', date: 5000 },
+      { path: 'media/photo.json', text: '{}', date: 9000 },
+    ]);
+    expect(d).toBe(5000);
+    expect(exportDate([{ path: 'following.json', text: '{}' }])).toBeNull();
+    expect(ageInDays(Date.UTC(2026, 10, 10), Date.UTC(2026, 10, 17, 12))).toBe(7);
+  });
+});
