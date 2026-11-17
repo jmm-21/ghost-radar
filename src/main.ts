@@ -2,6 +2,7 @@ import { fetchStats } from './services/api';
 import { Analyzer } from './ui/analyzer';
 import { byId } from './ui/dom';
 import { initFeedback } from './ui/feedback';
+import { animateGhost } from './ui/ghost';
 
 /** Navegación entre la portada y la herramienta, con #analizar en la URL para poder compartirla. */
 function initRouter(): void {
@@ -33,4 +34,5 @@ async function showPublicCounter(): Promise<void> {
 initRouter();
 new Analyzer();
 initFeedback();
+animateGhost();
 void showPublicCounter();
