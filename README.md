@@ -44,7 +44,7 @@ La mayoría de las apps de "unfollowers" piden tu contraseña. Eso va contra las
 2. Subes el `.zip` a ghost.radar.
 3. El archivo se lee y se compara **en tu navegador**. No se envía a ningún servidor.
 
-El backend solo recibe dos tipos de datos anónimos: el aviso "se ha hecho un análisis en Instagram" (para el contador público) y las opiniones que alguien envía voluntariamente. Nunca recibe nombres de usuario, listas ni archivos. Para limitar peticiones se usa un hash con sal que cambia cada día: **la IP no se guarda**.
+El backend solo recibe dos tipos de datos anónimos: el aviso "se ha hecho un análisis en Instagram" (para el contador público) y las opiniones que alguien envía voluntariamente. Nunca recibe nombres de usuario, listas ni archivos. Para limitar peticiones se usa un hash con sal que cambia cada día: **la IP no se guarda**. Las visitas se miden con Vercel Web Analytics, que no usa cookies.
 
 ## 🏗️ Arquitectura
 

@@ -1,3 +1,4 @@
+import { inject } from '@vercel/analytics';
 import { fetchStats } from './services/api';
 import { Analyzer } from './ui/analyzer';
 import { byId } from './ui/dom';
@@ -30,6 +31,9 @@ async function showPublicCounter(): Promise<void> {
     el.append('👻 ', b, ' análisis realizados');
   }
 }
+
+// Estadísticas de visitas de Vercel: sin cookies y sin datos personales.
+inject({ mode: import.meta.env.PROD ? 'production' : 'development' });
 
 initRouter();
 new Analyzer();
