@@ -1,0 +1,36 @@
+{
+  "name": "ghost-radar",
+  "version": "1.0.0",
+  "description": "Descubre quién no te sigue de vuelta en Instagram, TikTok, X y Threads usando la descarga oficial de tus datos. Privado por diseño.",
+  "private": true,
+  "author": "Jorge Méndez Martínez (https://github.com/jmm-21)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmm-21/ghost-radar.git"
+  },
+  "homepage": "https://github.com/jmm-21/ghost-radar#readme",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "jszip": "^3.10.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@vitest/coverage-v8": "^5.1.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}
