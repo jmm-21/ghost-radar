@@ -41,8 +41,15 @@
       <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0" stop-color="var(--a1)"/><stop offset=".55" stop-color="var(--a2)"/><stop offset="1" stop-color="var(--a3)"/>
       </linearGradient>
+      <clipPath id="ghostClip"><rect x="12" y="0" width="40" height="64"/></clipPath>
+      <mask id="ghostMask" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+        <path d="M12 50V28a20 20 0 0 1 40 0v22Z" fill="#fff"/>
+        <g clip-path="url(#ghostClip)">
+          <path d="M-28 44H72V52Q67 57 62 52T52 52T42 52T32 52T22 52T12 52T2 52T-8 52T-18 52T-28 52V44Z" fill="#fff"><animateTransform attributeName="transform" type="translate" from="-20 0" to="0 0" dur="1.6s" repeatCount="indefinite"/></path>
+        </g>
+      </mask>
       <symbol id="ghost" viewBox="0 0 64 64">
-        <path d="M12 52V28a20 20 0 0 1 40 0v24Q47 58 42 52T32 52T22 52T12 52Z" fill="url(#gg)"><animate attributeName="d" dur="1.4s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" values="M12 52V28a20 20 0 0 1 40 0v24Q47 58 42 52T32 52T22 52T12 52Z;M12 52V28a20 20 0 0 1 40 0v24Q47 46 42 52T32 52T22 52T12 52Z;M12 52V28a20 20 0 0 1 40 0v24Q47 58 42 52T32 52T22 52T12 52Z"/></path>
+        <rect x="12" y="8" width="40" height="52" fill="url(#gg)" mask="url(#ghostMask)"/>
         <path d="M18 26a14 14 0 0 1 9-11" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="3" stroke-linecap="round"/>
         <ellipse cx="25.5" cy="31" rx="3.6" ry="5" fill="#140f1c"/>
         <ellipse cx="38.5" cy="31" rx="3.6" ry="5" fill="#140f1c"/>
