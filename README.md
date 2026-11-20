@@ -176,7 +176,7 @@ Además:
 
 ## ☁️ Despliegue
 
-Se despliega en **Vercel**, gratis: la web va al CDN y `api/` se convierte en funciones serverless. La publicación en producción la hace el pipeline de arriba. La guía completa (Redis, dominio propio, variables) está en [docs/DEPLOY.md](docs/DEPLOY.md).
+Se despliega en **Vercel**, gratis: la web va al CDN y `api/` se convierte en funciones serverless. **Solo el pipeline publica en producción**, con la CLI de Vercel y tras pasar todas las fases: el despliegue automático de Vercel en `main` está desactivado en `vercel.json`, y Vercel sigue creando una preview por cada pull request. La guía completa (Redis, dominio propio, variables) está en [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ## 🛡️ Seguridad
 
