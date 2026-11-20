@@ -1,8 +1,5 @@
-import '@fontsource/bungee/400.css';
-import '@fontsource/chivo/400.css';
-import '@fontsource/chivo/700.css';
-import '@fontsource/chivo/900.css';
-import '@fontsource/silkscreen/700.css';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
 import { inject } from '@vercel/analytics';
 import { fetchStats } from './services/api';
 import { Analyzer } from './ui/analyzer';

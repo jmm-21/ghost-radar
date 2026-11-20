@@ -8,8 +8,8 @@ import { byId, countUp, externalIcon, h } from './dom';
 type Tab = 'notFollowingBack' | 'fans' | 'mutual';
 
 const MAX_RENDERED = 1500;
-// Las dos tintas del tema (brasa y ácido), siempre desde los tokens de CSS.
-const PALETTE = ['var(--color-accent)', 'var(--color-accent-2)'];
+// Los dos colores de la marca (naranja y morado), siempre desde los tokens de CSS.
+const PALETTE = ['var(--color-accent-2)', 'var(--color-purple)'];
 const ARC_LENGTH = 314.16;
 
 const EMPTY: Record<Tab, string> = {
