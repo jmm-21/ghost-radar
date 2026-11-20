@@ -1,4 +1,5 @@
 import { FEEDBACK_LIMITS } from '../../shared/types';
+import { onLangChange, t } from '../i18n';
 import { sendFeedback } from '../services/api';
 import { byId, h } from './dom';
 
@@ -14,13 +15,16 @@ export function initFeedback(): void {
   let rating: number | undefined;
 
   for (let i = 1; i <= 5; i++) {
-    const b = h('button', { type: 'button', 'aria-pressed': 'false', 'aria-label': `${i} de 5` }, '★');
+    const b = h('button', { type: 'button', 'aria-pressed': 'false', 'aria-label': t('fb.star', { n: i }) }, '★');
     b.addEventListener('click', () => {
       rating = rating === i ? undefined : i;
       stars.querySelectorAll('button').forEach((s, idx) => s.setAttribute('aria-pressed', String(rating !== undefined && idx < rating)));
     });
     stars.append(b);
   }
+  onLangChange(() =>
+    stars.querySelectorAll('button').forEach((b, i) => b.setAttribute('aria-label', t('fb.star', { n: i + 1 }))),
+  );
 
   const setMsg = (text: string, kind: '' | 'ok' | 'err' = '') => {
     msg.textContent = text;
@@ -38,15 +42,15 @@ export function initFeedback(): void {
     e.preventDefault();
     const text = message.value.trim();
     if (text.length < FEEDBACK_LIMITS.messageMin) {
-      setMsg('Escribe al menos unas palabras.', 'err');
+      setMsg(t('fb.tooShort'), 'err');
       return;
     }
     send.disabled = true;
-    setMsg('Enviando…');
+    setMsg(t('fb.sending'));
     const result = await sendFeedback({ message: text, rating, contact: contact.value.trim() || undefined });
     send.disabled = false;
     if (result.ok) {
-      setMsg('¡Gracias! Lo hemos recibido. 👻', 'ok');
+      setMsg(t('fb.thanks'), 'ok');
       form.reset();
       rating = undefined;
       stars.querySelectorAll('button').forEach((s) => s.setAttribute('aria-pressed', 'false'));

@@ -96,6 +96,12 @@ a:hover { text-decoration-color: var(--color-accent-2); }
 .bar__link { white-space: nowrap; font-weight: 500; font-size: var(--text-sm); color: var(--color-ink-2); text-decoration: none; padding: var(--space-xs) 0; }
 .bar__link:hover { color: var(--color-ink); text-decoration: underline; text-underline-offset: 0.3em; }
 .bar__link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; }
+.bar__end { display: flex; align-items: center; gap: var(--space-md); }
+.lang { position: relative; display: inline-flex; align-items: center; }
+.lang::after { content: ""; position: absolute; right: 12px; top: 50%; width: 6px; height: 6px; border-right: 2px solid var(--color-ink-2); border-bottom: 2px solid var(--color-ink-2); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+.lang__select { appearance: none; min-height: 40px; padding: 0 var(--space-xl) 0 var(--space-sm); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-ink); font: inherit; font-size: var(--text-sm); font-weight: 600; cursor: pointer; transition: border-color var(--dur-short) var(--ease-out); }
+.lang__select:hover { border-color: var(--color-accent); }
+.lang__select:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .bar__link--btn { min-height: 44px; border: 0; background: none; cursor: pointer; font-family: var(--font-body); }
 .bar__link--btn:active { transform: translateY(1px); }
 .bar__link--btn:disabled { opacity: 0.55; cursor: not-allowed; }
@@ -422,7 +428,7 @@ dialog.fb::backdrop { background: color-mix(in oklab, var(--color-ink) 35%, tran
 @media (prefers-reduced-motion: reduce) {
   .ghost-big, .close__ghost svg { animation: none; }
   .js .flow > .node, .js .node--off { opacity: 1; transform: none; transition: none; }
-  .btn, .golink, .moment, .net, .tab, .list li, .drop, .drop__badge, .stars button, a.open, .score__item--go, .since__item { transition: none; }
+  .btn, .golink, .moment, .net, .tab, .list li, .drop, .drop__badge, .stars button, a.open, .score__item--go, .since__item, .lang__select { transition: none; }
   .drop:hover .drop__badge, .drop.over .drop__badge { transform: none; }
   .ring__arc { transition: none; }
 }

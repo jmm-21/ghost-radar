@@ -127,3 +127,47 @@ test('la demo enseña cómo se ve el historial', async ({ page }) => {
   await expect(page.locator('#since')).toBeVisible();
   await expect(page.locator('#nLost')).toHaveText('3');
 });
+
+test('cambia a inglés, traduce todo y lo recuerda', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('.bar--home select[data-lang]').selectOption('en');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Who isn’t following');
+  await expect(page).toHaveTitle(/Who isn’t following me back/);
+  await page.locator('#start').click();
+  await expect(page.getByRole('heading', { name: 'Which network do you want to analyze?' })).toBeVisible();
+  await expect(page.locator('#howto h3')).toHaveText('Download your Instagram data');
+  await expect(page.locator('.bar--app select[data-lang]')).toHaveValue('en');
+
+  await page.locator('#demo').click();
+  await expect(page.locator('#resLabel')).toHaveText('Your Instagram results');
+  await expect(page.locator('#list a.open').first()).toContainText('View profile');
+
+  // Al cambiar con resultados en pantalla, también se traducen.
+  await page.locator('.bar--app select[data-lang]').selectOption('es');
+  await expect(page.locator('#resLabel')).toHaveText('Tus resultados en Instagram');
+  await expect(page.locator('#list a.open').first()).toContainText('Ver perfil');
+
+  await page.locator('.bar--app select[data-lang]').selectOption('en');
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page.locator('#howto h3')).toHaveText('Download your Instagram data');
+});
+
+test.describe('con el navegador en inglés', () => {
+  test.use({ locale: 'en-US' });
+  test('abre directamente en inglés', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await expect(page.locator('#start')).toHaveText('Get started');
+  });
+});
+
+test('las capturas de la portada cambian de idioma', async ({ page }) => {
+  await page.goto('/');
+  const shot = page.locator('.showcase img');
+  await expect(shot).toHaveAttribute('src', '/screens/resultados.png');
+  await page.locator('.bar--home select[data-lang]').selectOption('en');
+  await expect(shot).toHaveAttribute('src', '/screens/en/resultados.png');
+  expect(await shot.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
+});

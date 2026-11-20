@@ -1,6 +1,7 @@
 import '@fontsource-variable/geist';
 import '@fontsource-variable/geist-mono';
 import { inject } from '@vercel/analytics';
+import { initLangSelect, locale, onLangChange, t } from './i18n';
 import { fetchStats } from './services/api';
 import { Analyzer } from './ui/analyzer';
 import { byId } from './ui/dom';
@@ -28,13 +29,16 @@ function initRouter(): void {
 
 async function showPublicCounter(): Promise<void> {
   const stats = await fetchStats();
-  if (stats && stats.totalAnalyses > 0) {
+  if (!stats || stats.totalAnalyses <= 0) return;
+  const total = stats.totalAnalyses;
+  const paint = () => {
     const el = byId('counter');
-    el.textContent = '';
     const b = document.createElement('b');
-    b.textContent = stats.totalAnalyses.toLocaleString('es-ES');
-    el.append(b, ' análisis realizados');
-  }
+    b.textContent = total.toLocaleString(locale());
+    el.replaceChildren(b, t('hero.counter'));
+  };
+  paint();
+  onLangChange(paint);
 }
 
 /** Selector de capturas de la portada: flechas para moverse, como un tablist. Sin script se ven todas. */
@@ -82,6 +86,7 @@ function initReveal(): void {
 inject({ mode: import.meta.env.PROD ? 'production' : 'development' });
 
 document.documentElement.classList.add('js');
+initLangSelect();
 initRouter();
 initSwitcher();
 initReveal();
