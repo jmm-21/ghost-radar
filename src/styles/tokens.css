@@ -12,10 +12,10 @@
   --color-paper: oklch(97% 0.006 55); --color-paper-2: oklch(94.5% 0.007 55); --color-paper-3: oklch(91.5% 0.009 55);
   --color-ink: oklch(21% 0.012 38); --color-ink-2: oklch(29% 0.013 40); --color-muted: oklch(47% 0.013 45);
   --color-rule: oklch(87% 0.009 55); --color-rule-2: oklch(81% 0.011 55);
-  /* brand (the user's): the ghost's orange leads, a purple answers. Coral's own coral is replaced by request */
-  --color-accent: oklch(68% 0.2 42); --color-accent-ink: oklch(21% 0.012 38); --color-accent-2: oklch(54% 0.18 40); --color-focus: oklch(52% 0.2 300);
+  /* brand (the user's): one orange family, from the ghost. Coral's own coral is replaced by request */
+  --color-accent: oklch(68% 0.2 42); --color-accent-ink: oklch(21% 0.012 38); --color-accent-2: oklch(54% 0.18 40); --color-focus: oklch(50% 0.17 38);
   --color-accent-soft: oklch(95.5% 0.03 50);
-  --color-purple: oklch(50% 0.2 300); --color-purple-soft: oklch(95.5% 0.025 300);
+  --color-accent-deep: oklch(48% 0.16 38); --color-accent-tint: oklch(92% 0.05 48);
   --color-surface: oklch(99.4% 0.002 60);
   --color-cotton: oklch(98.8% 0.0045 80); --color-desk: oklch(94.3% 0.008 64); --color-print: oklch(23% 0.012 38);
   --color-board: oklch(22% 0.011 40); --color-board-type: oklch(96.5% 0.006 70); --color-paid: oklch(55.5% 0.15 33);

@@ -8,8 +8,8 @@ import { byId, countUp, externalIcon, h } from './dom';
 type Tab = 'notFollowingBack' | 'fans' | 'mutual';
 
 const MAX_RENDERED = 1500;
-// Los dos colores de la marca (naranja y morado), siempre desde los tokens de CSS.
-const PALETTE = ['var(--color-accent-2)', 'var(--color-purple)'];
+// Dos tonos del naranja de la marca, siempre desde los tokens de CSS.
+const PALETTE = ['var(--color-accent-2)', 'var(--color-accent-deep)'];
 const ARC_LENGTH = 314.16;
 
 const EMPTY: Record<Tab, string> = {
