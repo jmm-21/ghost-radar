@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/favicon.svg" width="88" alt="Logo de ghost.radar: un fantasma con degradado naranja, rosa y morado">
+<img src="public/favicon.svg" width="88" alt="Logo de ghost.radar: un fantasma naranja">
 
 # ghost.radar
 
@@ -87,7 +87,7 @@ ghost-radar/
 │   ├── config/             # Instrucciones y enlaces de cada red social
 │   ├── ui/                 # Componentes de interfaz (sin frameworks, sin innerHTML con datos del usuario)
 │   ├── services/           # Cliente HTTP de la API
-│   └── styles/             # CSS (tema dinámico por red social)
+│   └── styles/             # CSS (tokens y tema claro naranja)
 ├── shared/                 # Tipos compartidos frontend ↔ backend
 ├── api/                    # Puntos de entrada serverless (Vercel)
 ├── server/
