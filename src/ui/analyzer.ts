@@ -6,6 +6,7 @@ import { demoHistory, demoLists } from '../core/demo';
 import { detectNetwork, exportDate, parseFiles } from '../core/parse';
 import type { RawLists } from '../core/types';
 import { snapshotOf } from '../core/history';
+import { lang, onLangChange, t } from '../i18n';
 import { trackEvent } from '../services/api';
 import { clearHistory, recordAndCompare } from '../services/history';
 import { byId, externalIcon, h } from './dom';
@@ -26,6 +27,10 @@ export class Analyzer {
       }),
     );
     this.bindUpload();
+    onLangChange(() => {
+      this.setNetwork(this.network);
+      if (this.status.classList.contains('err')) this.setStatus('');
+    });
     byId('clearHistory').addEventListener('click', () => {
       void clearHistory(this.network).then(() => this.results.showHistory(null, false));
     });
@@ -51,20 +56,21 @@ export class Analyzer {
     const box = byId('howto');
     const steps = h('ol');
     // Contenido estático definido en config/networks.ts (nunca texto del usuario).
-    for (const s of c.steps) {
+    const text = c.text[lang()];
+    for (const s of text.steps) {
       const li = h('li');
       li.innerHTML = s;
       steps.append(li);
     }
     const note = h('div', { class: 'note' });
-    note.innerHTML = c.note;
+    note.innerHTML = text.note;
 
     let link: HTMLAnchorElement | null = null;
-    if (c.exportLink) {
-      link = h('a', { class: 'golink', href: c.exportLink.href, target: '_blank', rel: 'noopener noreferrer' }, c.exportLink.text);
+    if (c.exportHref && text.exportLinkText) {
+      link = h('a', { class: 'golink', href: c.exportHref, target: '_blank', rel: 'noopener noreferrer' }, text.exportLinkText);
       link.append(externalIcon());
     }
-    box.replaceChildren(h('h3', {}, `Descarga tus datos de ${c.name}`));
+    box.replaceChildren(h('h3', {}, t('app.howto', { net: c.name })));
     if (link) box.append(link);
     box.append(steps, note);
   }
@@ -107,22 +113,22 @@ export class Analyzer {
 
   private async handleFiles(files: File[]): Promise<void> {
     if (!files.length) return;
-    this.setStatus('Analizando…');
+    this.setStatus(t('status.analyzing'));
     try {
       const textFiles = await readUploads(files, this.network);
       this.finish(parseFiles(textFiles), true, exportDate(textFiles));
     } catch (err) {
-      this.setStatus(`No he podido abrir el archivo: ${(err as Error).message}`, true);
+      this.setStatus(t('status.cantOpen', { error: (err as Error).message }), true);
     }
   }
 
   private finish(lists: RawLists, real: boolean, date: number | null = null): void {
     if (!lists.followers.length || !lists.following.length) {
-      const missing = [!lists.followers.length && 'tus seguidores', !lists.following.length && 'tus seguidos']
+      const missing = [!lists.followers.length && t('status.yourFollowers'), !lists.following.length && t('status.yourFollowing')]
         .filter(Boolean)
-        .join(' ni ');
+.join(t('status.nor'));
       this.setStatus(
-        `No encuentro ${missing} en el archivo. ¿Es la descarga de ${NETWORK_CONFIG[this.network].name} y marcaste “Seguidores y seguidos”?`,
+        t('status.missing', { missing, net: NETWORK_CONFIG[this.network].name }),
         true,
       );
       return;
@@ -135,8 +141,7 @@ export class Analyzer {
     const data = compare(lists);
     this.results.show(data, this.network, date);
     if (!real) {
-      this.results.showHistory(demoHistory(this.network, data), false);
-      byId('sinceNote').textContent = 'Ejemplo: con tus datos reales, la segunda vez que los subas verás aquí quién se ha ido.';
+      this.results.showHistory(demoHistory(this.network, data), false, true);
       return;
     }
     void trackEvent({ type: 'analysis_completed', network: this.network });

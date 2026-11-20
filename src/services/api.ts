@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 /**
  * Cliente del backend. Solo envía datos anónimos (tipo de evento y red social):
  * nunca nombres de usuario, listas ni archivos.
@@ -36,8 +37,8 @@ export async function sendFeedback(input: FeedbackInput): Promise<{ ok: true } |
     });
     if (res.ok) return { ok: true };
     const data = (await res.json().catch(() => ({}))) as { error?: string };
-    return { ok: false, error: data.error ?? 'No se ha podido enviar. Inténtalo más tarde.' };
+    return { ok: false, error: data.error ?? t('fb.failed') };
   } catch {
-    return { ok: false, error: 'Sin conexión con el servidor. Inténtalo más tarde.' };
+    return { ok: false, error: t('fb.offline') };
   }
 }
