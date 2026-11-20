@@ -12,11 +12,11 @@ const entry = (handle: string) => ({
 });
 
 /** Crea en memoria un .zip con la misma estructura que la descarga oficial de Instagram. */
-async function instagramZip(followers: string[], following: string[]): Promise<Buffer> {
+async function instagramZip(followers: string[], following: string[], date = new Date()): Promise<Buffer> {
   const zip = new JSZip();
   const dir = 'connections/followers_and_following/';
-  zip.file(`${dir}followers_1.json`, JSON.stringify(followers.map(entry)));
-  zip.file(`${dir}following.json`, JSON.stringify({ relationships_following: following.map(entry) }));
+  zip.file(`${dir}followers_1.json`, JSON.stringify(followers.map(entry)), { date });
+  zip.file(`${dir}following.json`, JSON.stringify({ relationships_following: following.map(entry) }), { date });
   return zip.generateAsync({ type: 'nodebuffer' });
 }
 
@@ -94,4 +94,36 @@ test('el archivo nunca sale del navegador', async ({ page }) => {
   await page.locator('#file').setInputFiles({ name: 'instagram.zip', mimeType: 'application/zip', buffer: zip });
   await expect(page.locator('#results')).toBeVisible();
   expect(uploads).toEqual([]);
+});
+
+test('recuerda el análisis anterior y dice quién te ha dejado de seguir', async ({ page }) => {
+  await openTool(page);
+  const day = 864e5;
+  const first = await instagramZip(['ana', 'luis', 'pepe'], ['ana'], new Date(Date.now() - 14 * day));
+  await page.locator('#file').setInputFiles({ name: 'a.zip', mimeType: 'application/zip', buffer: first });
+  await expect(page.locator('#since')).toBeVisible();
+  await expect(page.locator('#sinceTitle')).toHaveText('Guardado en este dispositivo');
+  await expect(page.locator('.tab[data-k="lost"]')).toBeHidden();
+
+  // Segunda exportación, más reciente: luis se ha ido y marta ha llegado.
+  const second = await instagramZip(['ana', 'pepe', 'marta'], ['ana'], new Date(Date.now() - day));
+  await page.locator('#file').setInputFiles({ name: 'b.zip', mimeType: 'application/zip', buffer: second });
+  await expect(page.locator('#sinceTitle')).toContainText('Desde tu análisis del');
+  await expect(page.locator('#nLost')).toHaveText('1');
+  await expect(page.locator('#nGained')).toHaveText('1');
+  await page.locator('[data-go="lost"]').click();
+  await expect(page.locator('#list')).toContainText('luis');
+  await page.locator('.tab[data-k="gained"]').click();
+  await expect(page.locator('#list')).toContainText('marta');
+
+  await page.locator('#clearHistory').click();
+  await expect(page.locator('#since')).toBeHidden();
+  await expect(page.locator('.tab[data-k="lost"]')).toBeHidden();
+});
+
+test('la demo enseña cómo se ve el historial', async ({ page }) => {
+  await openTool(page);
+  await page.locator('#demo').click();
+  await expect(page.locator('#since')).toBeVisible();
+  await expect(page.locator('#nLost')).toHaveText('3');
 });

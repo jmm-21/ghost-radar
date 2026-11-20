@@ -211,11 +211,25 @@
         </div>
       </div>
 
+      <div class="since hidden" id="since" aria-live="polite">
+        <div class="since__head">
+          <p class="since__title" id="sinceTitle">Desde tu último análisis</p>
+          <p class="since__note" id="sinceNote"></p>
+        </div>
+        <div class="since__line" id="sinceLine">
+          <button class="since__item" data-go="lost" type="button"><span class="score__label">Te han dejado de seguir</span><b class="figure" id="sLost">0</b></button>
+          <button class="since__item since__item--gain" data-go="gained" type="button"><span class="score__label">Nuevos seguidores</span><b class="figure" id="sGained">0</b></button>
+        </div>
+        <button class="since__clear" id="clearHistory" type="button">Borrar historial</button>
+      </div>
+
       <div class="panel">
         <div class="tabs" role="tablist" aria-label="Listas">
           <button class="tab" role="tab" data-k="notFollowingBack" aria-selected="true" type="button">No te siguen<span class="n" id="nNotBack">0</span></button>
           <button class="tab" role="tab" data-k="fans" aria-selected="false" type="button">No les sigues<span class="n" id="nFans">0</span></button>
           <button class="tab" role="tab" data-k="mutual" aria-selected="false" type="button">Mutuos<span class="n" id="nMutual">0</span></button>
+          <button class="tab tab--hist hidden" role="tab" data-k="lost" aria-selected="false" type="button">Se fueron<span class="n" id="nLost">0</span></button>
+          <button class="tab tab--hist hidden" role="tab" data-k="gained" aria-selected="false" type="button">Nuevos<span class="n" id="nGained">0</span></button>
         </div>
         <div class="tools">
           <label class="search"><span class="visually-hidden">Buscar usuario</span>

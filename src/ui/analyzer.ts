@@ -2,10 +2,12 @@ import type { Network } from '../../shared/types';
 import { NETWORK_CONFIG } from '../config/networks';
 import { readUploads } from '../core/archive';
 import { compare } from '../core/compare';
-import { demoLists } from '../core/demo';
+import { demoHistory, demoLists } from '../core/demo';
 import { detectNetwork, exportDate, parseFiles } from '../core/parse';
 import type { RawLists } from '../core/types';
+import { snapshotOf } from '../core/history';
 import { trackEvent } from '../services/api';
+import { clearHistory, recordAndCompare } from '../services/history';
 import { byId, externalIcon, h } from './dom';
 import { ResultsView } from './results';
 
@@ -24,6 +26,9 @@ export class Analyzer {
       }),
     );
     this.bindUpload();
+    byId('clearHistory').addEventListener('click', () => {
+      void clearHistory(this.network).then(() => this.results.showHistory(null, false));
+    });
     byId('demo').addEventListener('click', (e) => {
       e.stopPropagation();
       void trackEvent({ type: 'demo_used', network: this.network });
@@ -127,7 +132,17 @@ export class Analyzer {
     if (detected && detected !== this.network) this.setNetwork(detected);
 
     this.setStatus('');
-    this.results.show(compare(lists), this.network, date);
-    if (real) void trackEvent({ type: 'analysis_completed', network: this.network });
+    const data = compare(lists);
+    this.results.show(data, this.network, date);
+    if (!real) {
+      this.results.showHistory(demoHistory(this.network, data), false);
+      byId('sinceNote').textContent = 'Ejemplo: con tus datos reales, la segunda vez que los subas verás aquí quién se ha ido.';
+      return;
+    }
+    void trackEvent({ type: 'analysis_completed', network: this.network });
+    const network = this.network;
+    void recordAndCompare(snapshotOf(network, data, date ?? Date.now())).then((diff) => {
+      if (this.network === network) this.results.showHistory(diff, true);
+    });
   }
 }
