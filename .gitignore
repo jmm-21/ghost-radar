@@ -8,3 +8,6 @@ coverage/
 *.log
 .DS_Store
 .hallmark/
+playwright-report/
+test-results/
+.lighthouseci/

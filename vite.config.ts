@@ -59,7 +59,12 @@ export default defineConfig(({ mode }) => {
     test: {
       environment: 'node',
       include: ['tests/**/*.test.ts'],
-      coverage: { include: ['src/core/**', 'server/**', 'shared/**'] },
+      coverage: {
+        include: ['src/core/**', 'server/**', 'shared/**'],
+        reporter: ['text', 'json-summary', 'html'],
+        // Si la cobertura baja de aquí, el CI falla.
+        thresholds: { statements: 85, branches: 78, functions: 85, lines: 88 },
+      },
     },
   };
 });
