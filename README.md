@@ -7,10 +7,13 @@
 **Descubre quién no te sigue de vuelta en Instagram, TikTok, X y Threads.**
 Sin contraseñas, sin extensiones y sin que tus datos salgan de tu dispositivo.
 
-[![CI](https://github.com/jmm-21/ghost-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/jmm-21/ghost-radar/actions/workflows/ci.yml)
+[![CI/CD](https://github.com/jmm-21/ghost-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/jmm-21/ghost-radar/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/jmm-21/ghost-radar/actions/workflows/codeql.yml/badge.svg)](https://github.com/jmm-21/ghost-radar/actions/workflows/codeql.yml)
+![Cobertura](https://img.shields.io/badge/cobertura-91%25-brightgreen)
+![Lighthouse](https://img.shields.io/badge/Lighthouse-99%20%C2%B7%20100%20%C2%B7%2096%20%C2%B7%20100-f26522?logo=lighthouse&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-Vitest-6e9f18?logo=vitest&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-Vitest%20%2B%20Playwright-6e9f18?logo=vitest&logoColor=white)
 ![Licencia](https://img.shields.io/badge/licencia-MIT-green)
 
 [**Probar la demo →**](https://ghost-radar-rrss.vercel.app)
@@ -94,6 +97,7 @@ ghost-radar/
 │   ├── handlers/           # Lógica de cada endpoint
 │   └── lib/                # Store (Redis/memoria), límite de peticiones, utilidades HTTP
 ├── tests/                  # Vitest: lectores, comparación y API
+├── e2e/                    # Playwright: la app entera en un navegador real
 └── .github/workflows/      # Integración continua
 ```
 
@@ -131,15 +135,45 @@ npm run dev          # frontend + API en http://localhost:5173
 |---|---|
 | `npm run dev` | Servidor de desarrollo con la API incluida. |
 | `npm test` | Tests (Vitest). |
-| `npm run test:coverage` | Tests con informe de cobertura. |
+| `npm run test:coverage` | Tests con informe de cobertura (mínimos obligatorios). |
+| `npm run test:e2e` | Tests end-to-end con Playwright, en escritorio y móvil (requiere `npm run build`). |
+| `npm run lighthouse` | Auditoría de Lighthouse sobre `dist/` con notas mínimas. |
 | `npm run typecheck` | Comprobación de tipos estricta. |
 | `npm run build` | Comprueba los tipos y genera `dist/`. |
 
 Las variables de entorno son opcionales. Consulta [`.env.example`](.env.example).
 
+## 🔁 CI/CD
+
+Cada cambio pasa por un pipeline en GitHub Actions. Nada llega a producción sin superar todas las fases.
+
+```mermaid
+flowchart LR
+    Push[Push o PR] --> Check["Tipos + tests unitarios<br/>+ cobertura + build"]
+    Check --> E2E["E2E con Playwright<br/>escritorio y móvil"]
+    Check --> LH["Lighthouse<br/>rendimiento, a11y, SEO"]
+    E2E --> Gate{"¿Es main?"}
+    LH --> Gate
+    Gate -->|PR| Preview["Preview en Vercel"]
+    Gate -->|main| Deploy["Despliegue a producción<br/>+ comprobación de salud"]
+```
+
+| Fase | Qué comprueba | Falla si… |
+|---|---|---|
+| **Tipos, tests y build** | TypeScript estricto, 35 tests unitarios, build de producción | hay un error de tipos, un test falla o la cobertura baja del mínimo |
+| **E2E** | Un Chrome real sube un `.zip` de Instagram, comprueba las tres listas, el buscador, los errores, la demo de cada red y que **el archivo no se envía a ningún servidor** | algo de eso no se cumple, en escritorio o en móvil |
+| **Lighthouse** | Rendimiento, accesibilidad, buenas prácticas y SEO | alguna nota baja de 90 (95 en accesibilidad y SEO) |
+| **Despliegue** | Publica en Vercel desde Actions y comprueba que la web responde | la web no devuelve 200 tras publicar |
+
+Además:
+- **`main` está protegida:** los cambios entran por pull request y solo se pueden fusionar con el CI en verde.
+- **Cada pull request** tiene su propia web de prueba en Vercel.
+- **CodeQL** analiza el código en busca de vulnerabilidades en cada cambio y cada semana.
+- **Dependabot** propone actualizaciones de dependencias, que pasan por el mismo pipeline.
+
 ## ☁️ Despliegue
 
-Se despliega en **Vercel** con un clic, gratis: la web va al CDN y `api/` se convierte en funciones serverless. La guía completa (Redis, dominio propio, variables) está en [docs/DEPLOY.md](docs/DEPLOY.md).
+Se despliega en **Vercel**, gratis: la web va al CDN y `api/` se convierte en funciones serverless. La publicación en producción la hace el pipeline de arriba. La guía completa (Redis, dominio propio, variables) está en [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ## 🛡️ Seguridad
 
