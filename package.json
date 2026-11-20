@@ -24,6 +24,9 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@fontsource/bungee": "^5.3.0",
+    "@fontsource/chivo": "^5.3.0",
+    "@fontsource/silkscreen": "^5.3.0",
     "@vercel/analytics": "^2.0.1",
     "jszip": "^3.10.2"
   },

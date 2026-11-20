@@ -25,162 +25,233 @@
 <meta name="twitter:image" content="https://ghost-radar-rrss.vercel.app/og-image.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ghost.radar","alternateName":"ghost radar","url":"https://ghost-radar-rrss.vercel.app/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"es","description":"Descubre quién no te sigue de vuelta en Instagram, TikTok, X y Threads usando la descarga oficial de tus datos.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Jorge Méndez Martínez","url":"https://github.com/jmm-21"}}</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/src/styles/main.css">
+<link rel="stylesheet" href="./src/styles/main.css">
 </head>
 <body data-net="instagram">
-<div class="aurora"><i></i><i></i><i></i></div>
-<div class="grain"></div>
+<a class="skip" href="#main">Saltar al contenido</a>
 
-<div class="wrap">
-  <!-- Logo reutilizable -->
-  <svg class="sr-defs" aria-hidden="true">
-    <defs>
-      <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="var(--a1)"/><stop offset=".55" stop-color="var(--a2)"/><stop offset="1" stop-color="var(--a3)"/>
-      </linearGradient>
-      <symbol id="ghost" viewBox="0 0 64 64">
-        <path class="ghost-body" d="M13.60 57.00Q12 57.00 12 55.40V28a20 20 0 0 1 40 0V55.40Q52 57.00 50.40 57.00L49.90 55.58L49.40 54.86L48.90 54.12L48.40 53.45L47.90 52.94L47.40 52.67L46.90 52.68L46.40 52.98L45.90 53.52L45.40 54.16L44.90 54.81L44.40 55.42L43.90 55.97L43.40 56.42L42.90 56.76L42.40 56.95L41.90 57.00L41.40 56.89L40.90 56.64L40.40 56.25L39.90 55.76L39.40 55.18L38.90 54.55L38.40 53.91L37.90 53.28L37.40 52.70L36.90 52.22L36.40 51.84L35.90 51.60L35.40 51.50L34.90 51.56L34.40 51.76L33.90 52.10L33.40 52.56L32.90 53.12L32.40 53.73L31.90 54.38L31.40 55.02L30.90 55.61L30.40 56.13L29.90 56.55L29.40 56.84L28.90 56.98L28.40 56.98L27.90 56.82L27.40 56.52L26.90 56.10L26.40 55.57L25.90 54.98L25.40 54.34L24.90 53.69L24.40 53.08L23.90 52.53L23.40 52.08L22.90 51.74L22.40 51.55L21.90 51.50L21.40 51.61L20.90 51.86L20.40 52.25L19.90 52.74L19.40 53.32L18.90 53.95L18.40 54.59L17.90 55.22L17.40 55.83L16.90 56.35L16.40 56.72L15.90 56.93L15.40 57.00L14.90 56.97L14.40 56.91L13.90 56.86Z" fill="url(#gg)"/>
-        <path d="M18 26a14 14 0 0 1 9-11" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="3" stroke-linecap="round"/>
-        <ellipse cx="25.5" cy="31" rx="3.6" ry="5" fill="#140f1c"/>
-        <ellipse cx="38.5" cy="31" rx="3.6" ry="5" fill="#140f1c"/>
-        <circle cx="26.6" cy="29.2" r="1.2" fill="#fff"/><circle cx="39.6" cy="29.2" r="1.2" fill="#fff"/>
-      </symbol>
-    </defs>
-  </svg>
+<!-- Logo: el fantasma de ghost.radar. La base ondulada la anima src/ui/ghost.ts -->
+<svg class="sr-defs" aria-hidden="true" focusable="false">
+  <symbol id="ghost" viewBox="0 0 64 64">
+    <path class="ghost-body" d="M13.60 57.00Q12 57.00 12 55.40V28a20 20 0 0 1 40 0V55.40Q52 57.00 50.40 57.00L49.90 55.58L49.40 54.86L48.90 54.12L48.40 53.45L47.90 52.94L47.40 52.67L46.90 52.68L46.40 52.98L45.90 53.52L45.40 54.16L44.90 54.81L44.40 55.42L43.90 55.97L43.40 56.42L42.90 56.76L42.40 56.95L41.90 57.00L41.40 56.89L40.90 56.64L40.40 56.25L39.90 55.76L39.40 55.18L38.90 54.55L38.40 53.91L37.90 53.28L37.40 52.70L36.90 52.22L36.40 51.84L35.90 51.60L35.40 51.50L34.90 51.56L34.40 51.76L33.90 52.10L33.40 52.56L32.90 53.12L32.40 53.73L31.90 54.38L31.40 55.02L30.90 55.61L30.40 56.13L29.90 56.55L29.40 56.84L28.90 56.98L28.40 56.98L27.90 56.82L27.40 56.52L26.90 56.10L26.40 55.57L25.90 54.98L25.40 54.34L24.90 53.69L24.40 53.08L23.90 52.53L23.40 52.08L22.90 51.74L22.40 51.55L21.90 51.50L21.40 51.61L20.90 51.86L20.40 52.25L19.90 52.74L19.40 53.32L18.90 53.95L18.40 54.59L17.90 55.22L17.40 55.83L16.90 56.35L16.40 56.72L15.90 56.93L15.40 57.00L14.90 56.97L14.40 56.91L13.90 56.86Z"/>
+    <ellipse class="ghost-eye" cx="25.5" cy="31" rx="3.6" ry="5"/>
+    <ellipse class="ghost-eye" cx="38.5" cy="31" rx="3.6" ry="5"/>
+    <circle class="ghost-glint" cx="26.6" cy="29.2" r="1.2"/><circle class="ghost-glint" cx="39.6" cy="29.2" r="1.2"/>
+  </symbol>
+</svg>
 
-  <!-- ============ PANTALLA DE INICIO ============ -->
-  <section id="home" class="view">
-    <div class="brand"><svg class="logo-sm"><use href="#ghost"/></svg><span>ghost.radar</span></div>
-    <header class="hero">
-      <div class="ghost-wrap">
-        <div class="ghost-glow"></div>
-        <svg class="ghost-big" viewBox="0 0 64 64"><use href="#ghost"/></svg>
-        <div class="ghost-shadow"></div>
-      </div>
-      <div class="badge"><b></b>100 % privado · sin contraseñas</div>
-      <h1>¿Quién <em>no me sigue</em><br>de vuelta?</h1>
-      <p class="lead">ghost.radar compara tus seguidores con las cuentas que sigues y te dice, en segundos, quién no te devuelve el follow.</p>
-      <button class="cta" id="start">Comenzar<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <div class="works-with">Funciona con <span>Instagram</span><span>TikTok</span><span>X</span><span>Threads</span></div>
-      <p class="counter" id="counter" aria-live="polite"></p>
-    </header>
-
-    <div class="features">
-      <div class="glass feat"><div class="fi">👻</div><h3>Caza a los fantasmas</h3><p>Descubre quién sigues que no te sigue de vuelta.</p></div>
-      <div class="glass feat"><div class="fi">💌</div><h3>Devuelve el follow</h3><p>Mira quién te sigue y a quién todavía no sigues tú.</p></div>
-      <div class="glass feat"><div class="fi">🔒</div><h3>Sin contraseñas</h3><p>Usa la descarga oficial de tus datos. Nada sale de tu dispositivo.</p></div>
+<!-- ============ PORTADA ============ -->
+<div id="home" class="view">
+  <div class="banner"><div class="container"><p>100 % privado y sin contraseñas. Para Instagram, TikTok, X y Threads.</p></div></div>
+  <header class="bar">
+    <div class="container bar__in">
+      <span class="brand"><svg class="logo" aria-hidden="true"><use href="#ghost"/></svg><span class="brand__name">ghost.radar</span></span>
+      <a class="bar__link" href="#como-funciona">Cómo funciona</a>
     </div>
+  </header>
 
-    <p class="step-label center">Cómo funciona</p>
-    <div class="how3">
-      <div><b>1</b><h4>Elige tu red</h4><p>Instagram, TikTok, X o Threads.</p></div>
-      <div><b>2</b><h4>Descarga tus datos</h4><p>Te guiamos paso a paso.</p></div>
-      <div><b>3</b><h4>Sube el archivo</h4><p>Y ve los resultados al momento.</p></div>
-    </div>
-  </section>
-
-  <!-- ============ PANTALLA DE LA APP ============ -->
-  <div id="appView" class="view hidden">
-  <div class="topbar">
-    <button class="brand as-btn" id="toHome" aria-label="Volver al inicio"><svg class="logo-sm"><use href="#ghost"/></svg><span>ghost.radar</span></button>
-    <button class="back" id="back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Inicio</button>
-  </div>
-  <h2 class="app-title">¿Qué red quieres analizar?</h2>
-
-  <p class="step-label">Elige tu red social</p>
-  <div class="nets" id="nets">
-    <button class="net" data-net="instagram" aria-pressed="true"><div class="ic instagram">◎</div><span>Instagram</span></button>
-    <button class="net" data-net="tiktok" aria-pressed="false"><div class="ic tiktok">♪</div><span>TikTok</span></button>
-    <button class="net" data-net="x" aria-pressed="false"><div class="ic x">X</div><span>X / Twitter</span></button>
-    <button class="net" data-net="threads" aria-pressed="false"><small>beta</small><div class="ic threads">@</div><span>Threads</span></button>
-  </div>
-
-  <div class="grid2">
-    <div class="glass howto" id="howto"></div>
-    <div class="glass drop" id="drop" tabindex="0" role="button" aria-label="Subir archivo">
-      <div class="up"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 20h16"/></svg></div>
-      <strong>Suelta aquí tu archivo .zip</strong>
-      <small id="dropHint">o toca para elegirlo. También valen los archivos sueltos.</small>
-      <button class="demo" id="demo" type="button">Probar con datos de ejemplo</button>
-      <input id="file" type="file" multiple accept=".zip,.json,.html,.js,.txt" class="hidden">
-    </div>
-  </div>
-  <p id="status" class="status"></p>
-
-  <section id="results" class="hidden">
-    <p class="step-label" id="resLabel">Tus resultados</p>
-    <div class="overview">
-      <div class="glass ring">
-        <div class="wrapc">
-          <svg viewBox="0 0 120 120">
-            <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--a1)"/><stop offset=".55" stop-color="var(--a2)"/><stop offset="1" stop-color="var(--a3)"/></linearGradient></defs>
-            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="12"/>
-            <circle id="arc" cx="60" cy="60" r="50" fill="none" stroke="url(#g)" stroke-width="12" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
-          </svg>
-          <div class="val"><b id="pct">0%</b><span>te siguen de vuelta</span></div>
+  <main id="main">
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__text">
+          <h1>¿Quién no me sigue de vuelta?</h1>
+          <p class="lead">Compara tus seguidores y tus seguidos en segundos, sin contraseñas.</p>
+          <div class="hero__actions">
+            <button class="btn" id="start" type="button">Comenzar</button>
+            <p class="counter" id="counter" aria-live="polite"></p>
+          </div>
         </div>
-        <p>de las cuentas que sigues</p>
+        <div class="hero__mark" aria-hidden="true">
+          <svg class="ghost-big" viewBox="0 0 64 64"><use href="#ghost"/></svg>
+          <div class="ghost-shadow"></div>
+        </div>
       </div>
-      <div class="stats">
-        <div class="glass stat"><span>Seguidores</span><b id="sFollowers">0</b></div>
-        <div class="glass stat"><span>Seguidos</span><b id="sFollowing">0</b></div>
-        <div class="glass stat click hot" data-go="notFollowingBack"><span>No te siguen de vuelta</span><b id="sNotBack">0</b></div>
-        <div class="glass stat click" data-go="fans"><span>No les sigues de vuelta</span><b id="sFans">0</b></div>
-      </div>
-    </div>
+    </section>
 
-    <div class="glass panel">
-      <div class="tabs" role="tablist">
-        <button class="tab" role="tab" data-k="notFollowingBack" aria-selected="true">No te siguen<span class="n" id="nNotBack">0</span></button>
-        <button class="tab" role="tab" data-k="fans" aria-selected="false">No les sigues<span class="n" id="nFans">0</span></button>
-        <button class="tab" role="tab" data-k="mutual" aria-selected="false">Mutuos<span class="n" id="nMutual">0</span></button>
+    <section class="map" aria-labelledby="map-h">
+      <div class="container">
+        <div class="head-split">
+          <h2 id="map-h">Todo pasa en tu navegador</h2>
+          <p class="lead"><b>Sin contraseñas.</b> Usa la descarga oficial de tus datos. Nada sale de tu dispositivo.</p>
+        </div>
+        <div class="diagram" role="figure" aria-label="Por dónde pasan tus datos: de tu red social a tu descarga, de tu descarga a tu navegador, y nada a nuestro servidor">
+          <ol class="flow">
+            <li class="node">
+              <h3>Funciona con</h3>
+              <ul class="chips"><li>Instagram</li><li>TikTok</li><li>X</li><li>Threads</li></ul>
+            </li>
+            <li class="node">
+              <h3>Tu descarga oficial</h3>
+              <p>El .zip con tus seguidores y tus seguidos.</p>
+            </li>
+            <li class="node node--you">
+              <h3>Tu navegador</h3>
+              <p>ghost.radar compara las dos listas.</p>
+              <ul class="outs"><li>No te siguen</li><li>No les sigues</li><li>Mutuos</li></ul>
+            </li>
+          </ol>
+          <div class="node node--off">
+            <h3>Nuestro servidor</h3>
+            <p>Tus archivos y tus listas no llegan aquí.</p>
+          </div>
+        </div>
       </div>
-      <div class="tools">
-        <label class="search">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input id="q" type="search" placeholder="Buscar usuario…" autocomplete="off">
-        </label>
-        <button id="copy" class="btn">Copiar lista</button>
-      </div>
-      <p class="data-age hidden" id="dataAge"></p>
-      <details class="gone" id="gone">
-        <summary>¿Te sale «Esta página no está disponible» al abrir un perfil?</summary>
-        <p>Esa cuenta ha <b>cambiado de nombre</b>, se ha <b>desactivado</b> o <b>te ha bloqueado</b> desde que exportaste tus datos. La exportación solo guarda el @nombre de ese momento, y la red social no redirige los nombres antiguos.</p>
-        <p>Para dejar de seguirla, búscala en tu lista de <b>Seguidos</b> dentro de la app, donde aparece con su nombre actual. Las cuentas desactivadas suelen aparecer aquí como “no te siguen” aunque ya no existan.</p>
-      </details>
-      <p class="hint hidden" id="xHint">X solo incluye el número de cuenta, no el nombre de usuario. Pulsa “Ver perfil” para saber quién es.</p>
-      <ul id="list" class="list"></ul>
-    </div>
-  </section>
-  </div>
+    </section>
 
-  <footer>
-    <div class="lock"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Todo se procesa en tu navegador. Tus archivos no salen de tu dispositivo.</div>
-    <div>¿Facebook o LinkedIn? Allí las amistades y conexiones son siempre mutuas, así que no hay nada que comparar.</div>
-    <button class="fb-open" id="fbOpen" type="button">¿Ideas o errores? Danos tu opinión</button>
-  </footer>
+    <section class="moments" aria-label="Lo que ves al analizar">
+      <div class="container moments__grid" data-switch>
+        <div class="moments__tabs" role="tablist" aria-label="Listas de resultados" aria-orientation="vertical">
+          <button class="moment" role="tab" id="m-tab-1" aria-controls="m-panel-1" aria-selected="true" type="button">
+            <span class="moment__title">Caza a los fantasmas</span>
+            <span class="moment__line">Descubre quién sigues que no te sigue de vuelta.</span>
+          </button>
+          <button class="moment" role="tab" id="m-tab-2" aria-controls="m-panel-2" aria-selected="false" tabindex="-1" type="button">
+            <span class="moment__title">Devuelve el follow</span>
+            <span class="moment__line">Mira quién te sigue y a quién todavía no sigues tú.</span>
+          </button>
+        </div>
+        <div class="moments__panels">
+          <figure class="screen crt" role="tabpanel" id="m-panel-1" aria-labelledby="m-tab-1" data-slot="demo-1" data-kind="product" data-alt="La lista «No te siguen» de ghost.radar con datos de ejemplo">
+            <img src="/screens/no-te-siguen.png" width="1520" height="1454" alt="Lista de cuentas que no te siguen de vuelta, cada una con su botón Ver perfil" loading="lazy">
+          </figure>
+          <figure class="screen crt" role="tabpanel" id="m-panel-2" aria-labelledby="m-tab-2" data-slot="demo-2" data-kind="product" data-alt="La lista «No les sigues» de ghost.radar con datos de ejemplo">
+            <img src="/screens/no-les-sigues.png" width="1520" height="1454" alt="Lista de cuentas que te siguen y a las que tú no sigues" loading="lazy">
+          </figure>
+        </div>
+      </div>
+    </section>
 
-  <dialog class="fb" id="fbDialog">
-    <form id="fbForm" method="dialog" novalidate>
-      <h3>Tu opinión nos ayuda 👻</h3>
-      <p>Cuéntanos qué mejorarías o si algo no ha funcionado. Es anónimo salvo que dejes un contacto.</p>
-      <div>
-        <label id="starsLabel">Valoración (opcional)</label>
-        <div class="stars" id="stars" role="group" aria-labelledby="starsLabel"></div>
+    <section class="how" id="como-funciona" aria-labelledby="how-h">
+      <div class="container how__grid">
+        <h2 id="how-h">Cómo funciona</h2>
+        <ol class="menu">
+          <li class="menu__row is-cursor"><span class="menu__n">1</span><h3>Elige tu red</h3><p>Instagram, TikTok, X o Threads.</p></li>
+          <li class="menu__row"><span class="menu__n">2</span><h3>Descarga tus datos</h3><p>Te guiamos paso a paso.</p></li>
+          <li class="menu__row"><span class="menu__n">3</span><h3>Sube el archivo</h3><p>Y ve los resultados al momento.</p></li>
+        </ol>
       </div>
-      <label>Mensaje<textarea id="fbMessage" rows="4" maxlength="1000" required placeholder="Me encanta, pero…"></textarea></label>
-      <label>Contacto (opcional)<input id="fbContact" maxlength="120" placeholder="email o @usuario"></label>
-      <p class="fb-msg" id="fbMsg" role="status"></p>
-      <div class="fb-actions">
-        <button class="btn" type="button" id="fbCancel">Cancelar</button>
-        <button class="btn primary" type="submit" id="fbSend">Enviar</button>
+    </section>
+
+    <section class="close" aria-labelledby="close-h">
+      <div class="container close__grid">
+        <div class="close__text">
+          <h2 id="close-h">Tus fantasmas, desde tu .zip</h2>
+          <button class="btn btn--ink" type="button" data-start>Comenzar</button>
+        </div>
+        <figure class="screen crt" data-slot="demo-3" data-kind="product" data-alt="El resumen de resultados de ghost.radar con datos de ejemplo">
+          <img src="/screens/resumen.png" width="1520" height="984" alt="Resumen de un análisis: el porcentaje de cuentas que te siguen de vuelta y el marcador de seguidores, seguidos, quién no te sigue y a quién no sigues" loading="lazy">
+        </figure>
       </div>
-    </form>
-  </dialog>
+    </section>
+  </main>
 </div>
+
+<!-- ============ LA HERRAMIENTA ============ -->
+<div id="appView" class="view hidden">
+  <header class="bar bar--app">
+    <div class="container bar__in">
+      <button class="brand brand--btn" id="toHome" type="button" aria-label="Volver al inicio"><svg class="logo" aria-hidden="true"><use href="#ghost"/></svg><span class="brand__name">ghost.radar</span></button>
+      <button class="btn btn--quiet btn--s" id="back" type="button">Inicio</button>
+    </div>
+  </header>
+
+  <div class="container app">
+    <h2 class="app__title">¿Qué red quieres analizar?</h2>
+
+    <fieldset class="nets-field">
+      <legend>Elige tu red social</legend>
+      <div class="nets" id="nets">
+        <button class="net" data-net="instagram" aria-pressed="true" type="button"><span class="net__name">Instagram</span></button>
+        <button class="net" data-net="tiktok" aria-pressed="false" type="button"><span class="net__name">TikTok</span></button>
+        <button class="net" data-net="x" aria-pressed="false" type="button"><span class="net__name">X / Twitter</span></button>
+        <button class="net" data-net="threads" aria-pressed="false" type="button"><span class="net__name">Threads</span><small>beta</small></button>
+      </div>
+    </fieldset>
+
+    <div class="work">
+      <div class="well howto" id="howto"></div>
+      <div class="drop" id="drop" tabindex="0" role="button" aria-label="Subir archivo">
+        <svg class="drop__icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 20h16"/></svg>
+        <strong class="drop__title">Suelta aquí tu archivo .zip</strong>
+        <small id="dropHint">o toca para elegirlo. También valen los archivos sueltos.</small>
+        <button class="link-btn" id="demo" type="button">Probar con datos de ejemplo</button>
+        <input id="file" type="file" multiple accept=".zip,.json,.html,.js,.txt" class="hidden">
+      </div>
+    </div>
+    <p id="status" class="status" role="status"></p>
+
+    <section id="results" class="results hidden" aria-labelledby="resLabel">
+      <h3 class="results__label" id="resLabel">Tus resultados</h3>
+      <div class="score">
+        <div class="score__ring">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring__track" cx="60" cy="60" r="50"/>
+            <circle class="ring__arc" id="arc" cx="60" cy="60" r="50" stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+          </svg>
+          <p class="ring__val"><span class="ring__fig"><b class="figure" id="pct">0</b><span class="ring__unit">%</span></span><span>te siguen de vuelta, de las cuentas que sigues</span></p>
+        </div>
+        <div class="score__line">
+          <div class="score__item"><span class="score__label">Seguidores</span><b class="figure" id="sFollowers">0</b></div>
+          <div class="score__item"><span class="score__label">Seguidos</span><b class="figure" id="sFollowing">0</b></div>
+          <button class="score__item score__item--go" data-go="notFollowingBack" type="button"><span class="score__label">No te siguen de vuelta</span><b class="figure" id="sNotBack">0</b></button>
+          <button class="score__item score__item--go" data-go="fans" type="button"><span class="score__label">No les sigues de vuelta</span><b class="figure" id="sFans">0</b></button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="tabs" role="tablist" aria-label="Listas">
+          <button class="tab" role="tab" data-k="notFollowingBack" aria-selected="true" type="button">No te siguen<span class="n" id="nNotBack">0</span></button>
+          <button class="tab" role="tab" data-k="fans" aria-selected="false" type="button">No les sigues<span class="n" id="nFans">0</span></button>
+          <button class="tab" role="tab" data-k="mutual" aria-selected="false" type="button">Mutuos<span class="n" id="nMutual">0</span></button>
+        </div>
+        <div class="tools">
+          <label class="search"><span class="visually-hidden">Buscar usuario</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="q" type="search" placeholder="Buscar usuario…" autocomplete="off">
+          </label>
+          <button id="copy" class="btn btn--quiet" type="button">Copiar lista</button>
+        </div>
+        <p class="data-age hidden" id="dataAge"></p>
+        <details class="gone" id="gone">
+          <summary>¿Te sale «Esta página no está disponible» al abrir un perfil?</summary>
+          <p>Esa cuenta ha <b>cambiado de nombre</b>, se ha <b>desactivado</b> o <b>te ha bloqueado</b> desde que exportaste tus datos. La exportación solo guarda el @nombre de ese momento, y la red social no redirige los nombres antiguos.</p>
+          <p>Para dejar de seguirla, búscala en tu lista de <b>Seguidos</b> dentro de la app, donde aparece con su nombre actual. Las cuentas desactivadas suelen aparecer aquí como “no te siguen” aunque ya no existan.</p>
+        </details>
+        <p class="hint hidden" id="xHint">X solo incluye el número de cuenta, no el nombre de usuario. Pulsa “Ver perfil” para saber quién es.</p>
+        <ul id="list" class="list"></ul>
+      </div>
+    </section>
+  </div>
+</div>
+
+<footer class="mast">
+  <div class="container">
+    <p class="mast__word"><svg class="logo logo--mast" aria-hidden="true"><use href="#ghost"/></svg><span>ghost.radar</span></p>
+    <div class="mast__row">
+      <p>Todo se procesa en tu navegador. Tus archivos no salen de tu dispositivo.</p>
+      <p>¿Facebook o LinkedIn? Allí las amistades y conexiones son siempre mutuas, así que no hay nada que comparar.</p>
+      <button class="link-btn" id="fbOpen" type="button">¿Ideas o errores? Danos tu opinión</button>
+    </div>
+  </div>
+</footer>
+
+<dialog class="fb" id="fbDialog" aria-labelledby="fbTitle">
+  <form id="fbForm" method="dialog" novalidate>
+    <h3 id="fbTitle">Tu opinión nos ayuda</h3>
+    <p>Cuéntanos qué mejorarías o si algo no ha funcionado. Es anónimo salvo que dejes un contacto.</p>
+    <div>
+      <p class="fb__label" id="starsLabel">Valoración (opcional)</p>
+      <div class="stars" id="stars" role="group" aria-labelledby="starsLabel"></div>
+    </div>
+    <label class="fb__field">Mensaje<textarea id="fbMessage" rows="4" maxlength="1000" required placeholder="Me encanta, pero…"></textarea></label>
+    <label class="fb__field">Contacto (opcional)<input id="fbContact" maxlength="120" autocomplete="email" placeholder="email o @usuario"></label>
+    <p class="fb-msg" id="fbMsg" role="status"></p>
+    <div class="fb-actions">
+      <button class="btn btn--quiet" type="button" id="fbCancel">Cancelar</button>
+      <button class="btn" type="submit" id="fbSend">Enviar</button>
+    </div>
+  </form>
+</dialog>
 <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

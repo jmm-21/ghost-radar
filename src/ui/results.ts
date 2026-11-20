@@ -8,7 +8,8 @@ import { byId, countUp, externalIcon, h } from './dom';
 type Tab = 'notFollowingBack' | 'fans' | 'mutual';
 
 const MAX_RENDERED = 1500;
-const PALETTE = ['#7c5cff', '#ff4d8d', '#ff8a3d', '#1fbfa3', '#3d8bff', '#c04dff', '#ff5e5e', '#2ec27e'];
+// Las dos tintas del tema (brasa y ácido), siempre desde los tokens de CSS.
+const PALETTE = ['var(--color-accent)', 'var(--color-accent-2)'];
 const ARC_LENGTH = 314.16;
 
 const EMPTY: Record<Tab, string> = {
@@ -68,7 +69,7 @@ export class ResultsView {
     countUp(byId('sFollowing'), data.following.size);
     countUp(byId('sNotBack'), data.notFollowingBack.length);
     countUp(byId('sFans'), data.fans.length);
-    countUp(byId('pct'), data.followBackRate, '%');
+    countUp(byId('pct'), data.followBackRate); // el % va aparte, en Chivo: Silkscreen lo dibuja como un 1
     byId('nNotBack').textContent = String(data.notFollowingBack.length);
     byId('nFans').textContent = String(data.fans.length);
     byId('nMutual').textContent = String(data.mutual.length);
@@ -147,7 +148,7 @@ export class ResultsView {
     if (!items.length) {
       const searching = Boolean(this.search.value);
       this.list.replaceChildren(
-        h('li', { class: 'empty' }, h('div', {}, searching ? '🔍' : '🎉'), searching ? 'Ningún usuario coincide con tu búsqueda.' : EMPTY[this.tab]),
+        h('li', { class: 'empty' }, searching ? 'Ningún usuario coincide con tu búsqueda.' : EMPTY[this.tab]),
       );
       return;
     }

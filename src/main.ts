@@ -1,3 +1,8 @@
+import '@fontsource/bungee/400.css';
+import '@fontsource/chivo/400.css';
+import '@fontsource/chivo/700.css';
+import '@fontsource/chivo/900.css';
+import '@fontsource/silkscreen/700.css';
 import { inject } from '@vercel/analytics';
 import { fetchStats } from './services/api';
 import { Analyzer } from './ui/analyzer';
@@ -9,12 +14,15 @@ import { animateGhost } from './ui/ghost';
 function initRouter(): void {
   const show = (view: 'home' | 'app', push = false) => {
     const app = view === 'app';
+    // Un enlace interno (#como-funciona) también dispara popstate: solo se cambia de pantalla si hace falta.
+    if (!push && byId('appView').classList.contains('hidden') === !app) return;
     byId('home').classList.toggle('hidden', app);
     byId('appView').classList.toggle('hidden', !app);
     if (push) history.pushState(null, '', app ? '#analizar' : location.pathname);
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
   byId('start').addEventListener('click', () => show('app', true));
+  document.querySelectorAll('[data-start]').forEach((b) => b.addEventListener('click', () => show('app', true)));
   byId('back').addEventListener('click', () => show('home', true));
   byId('toHome').addEventListener('click', () => show('home', true));
   window.addEventListener('popstate', () => show(location.hash === '#analizar' ? 'app' : 'home'));
@@ -28,14 +36,58 @@ async function showPublicCounter(): Promise<void> {
     el.textContent = '';
     const b = document.createElement('b');
     b.textContent = stats.totalAnalyses.toLocaleString('es-ES');
-    el.append('👻 ', b, ' análisis realizados');
+    el.append(b, ' análisis realizados');
   }
+}
+
+/** Selector de capturas de la portada: flechas para moverse, como un tablist. Sin script se ven todas. */
+function initSwitcher(): void {
+  document.querySelectorAll<HTMLElement>('[data-switch]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const select = (tab: HTMLButtonElement, focus = false) => {
+      for (const t of tabs) {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls') ?? '')?.toggleAttribute('hidden', !on);
+      }
+      if (focus) tab.focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t));
+      t.addEventListener('keydown', (e) => {
+        const step = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
+        if (!step) return;
+        e.preventDefault();
+        select(tabs[(i + step + tabs.length) % tabs.length]!, true);
+      });
+    });
+    const first = tabs.find((t) => t.getAttribute('aria-selected') === 'true') ?? tabs[0];
+    if (first) select(first);
+  });
+}
+
+/** La única animación de entrada: los nodos del mapa aparecen uno tras otro, una vez. */
+function initReveal(): void {
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      }
+    }),
+    { rootMargin: '0px 0px -10% 0px' },
+  );
+  document.querySelectorAll('.diagram').forEach((el) => io.observe(el));
 }
 
 // Estadísticas de visitas de Vercel: sin cookies y sin datos personales.
 inject({ mode: import.meta.env.PROD ? 'production' : 'development' });
 
+document.documentElement.classList.add('js');
 initRouter();
+initSwitcher();
+initReveal();
 new Analyzer();
 initFeedback();
 animateGhost();
