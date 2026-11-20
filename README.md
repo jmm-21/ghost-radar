@@ -31,6 +31,7 @@ Sin contraseñas, sin extensiones y sin que tus datos salgan de tu dispositivo.
 | 👻 **No te siguen de vuelta** | Las cuentas que sigues y que no te siguen. |
 | 💌 **No les sigues de vuelta** | Quién te sigue y a quién todavía no sigues tú. |
 | 🤝 **Mutuos** | Os seguís mutuamente, con la fecha desde la que os seguís. |
+| 🕰️ **Historial** | La segunda vez que subes tus datos te dice quién te ha dejado de seguir y quién es nuevo. Se guarda solo en tu navegador (IndexedDB). |
 | 📊 **Resumen visual** | Porcentaje de seguimiento mutuo y contadores animados. |
 | 🔎 **Buscar y copiar** | Filtra por nombre, abre perfiles y copia cualquier lista. |
 
@@ -160,7 +161,7 @@ flowchart LR
 
 | Fase | Qué comprueba | Falla si… |
 |---|---|---|
-| **Tipos, tests y build** | TypeScript estricto, 35 tests unitarios, build de producción | hay un error de tipos, un test falla o la cobertura baja del mínimo |
+| **Tipos, tests y build** | TypeScript estricto, 41 tests unitarios, build de producción | hay un error de tipos, un test falla o la cobertura baja del mínimo |
 | **E2E** | Un Chrome real sube un `.zip` de Instagram, comprueba las tres listas, el buscador, los errores, la demo de cada red y que **el archivo no se envía a ningún servidor** | algo de eso no se cumple, en escritorio o en móvil |
 | **Lighthouse** | Rendimiento, accesibilidad, buenas prácticas y SEO | alguna nota baja de 90 (95 en accesibilidad y SEO) |
 | **Despliegue** | Publica en Vercel desde Actions y comprueba que la web responde | la web no devuelve 200 tras publicar |
@@ -184,7 +185,7 @@ Se despliega en **Vercel**, gratis: la web va al CDN y `api/` se convierte en fu
 
 ## 🗺️ Próximos pasos
 
-- [ ] Comparar dos exportaciones para ver **quién te ha dejado de seguir**.
+- [x] Historial local: ver **quién te ha dejado de seguir** desde el último análisis (IndexedDB, sin salir del dispositivo).
 - [ ] Instalable como app (PWA) y funcionamiento sin conexión.
 - [ ] Exportar resultados a CSV.
 - [ ] Versión en inglés.

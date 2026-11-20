@@ -2,10 +2,11 @@ import type { Network } from '../../shared/types';
 import { NETWORK_CONFIG } from '../config/networks';
 import { filterAndSort, label } from '../core/compare';
 import { ageInDays, STALE_AFTER_DAYS } from '../core/parse';
+import type { HistoryDiff } from '../core/history';
 import type { Account, Comparison } from '../core/types';
 import { byId, countUp, externalIcon, h } from './dom';
 
-type Tab = 'notFollowingBack' | 'fans' | 'mutual';
+type Tab = 'notFollowingBack' | 'fans' | 'mutual' | 'lost' | 'gained';
 
 const MAX_RENDERED = 1500;
 // Dos tonos del naranja de la marca, siempre desde los tokens de CSS.
@@ -16,11 +17,15 @@ const EMPTY: Record<Tab, string> = {
   notFollowingBack: '¡Todo el mundo te sigue de vuelta!',
   fans: 'Sigues de vuelta a todos tus seguidores.',
   mutual: 'Aún no tienes seguidores mutuos.',
+  lost: 'Nadie te ha dejado de seguir desde la última vez.',
+  gained: 'No tienes seguidores nuevos desde la última vez.',
 };
 const SINCE: Record<Tab, string> = {
   notFollowingBack: 'Le sigues desde',
   fans: 'Te sigue desde',
   mutual: 'Desde',
+  lost: 'Te seguía desde',
+  gained: 'Te sigue desde',
 };
 
 function colorFor(key: string): string {
@@ -34,6 +39,7 @@ const fmtDate = (ts: number) =>
 
 export class ResultsView {
   private data: Comparison | null = null;
+  private history: HistoryDiff | null = null;
   private network: Network = 'instagram';
   private tab: Tab = 'notFollowingBack';
   private readonly list = byId<HTMLUListElement>('list');
@@ -56,7 +62,9 @@ export class ResultsView {
 
   show(data: Comparison, network: Network, exportedAt: number | null = null): void {
     this.data = data;
+    this.history = null;
     this.network = network;
+    this.showHistory(null, false);
     this.search.value = '';
     const section = byId('results');
     section.classList.remove('hidden');
@@ -102,6 +110,34 @@ export class ResultsView {
     el.classList.remove('hidden');
   }
 
+  /**
+   * Muestra qué ha cambiado desde el último análisis guardado en este dispositivo.
+   * `saved` indica si este análisis se ha guardado (no se guarda la demo).
+   */
+  showHistory(diff: HistoryDiff | null, saved: boolean): void {
+    this.history = diff;
+    const box = byId('since');
+    document.querySelectorAll('.tab--hist').forEach((t) => t.classList.toggle('hidden', !diff));
+    if (!diff && !saved) {
+      box.classList.add('hidden');
+      if (this.tab === 'lost' || this.tab === 'gained') this.select('notFollowingBack');
+      return;
+    }
+    box.classList.remove('hidden');
+    box.classList.toggle('since--first', !diff);
+    if (diff) {
+      byId('sinceTitle').textContent = `Desde tu análisis del ${fmtDate(diff.previous.takenAt)}`;
+      byId('sinceNote').textContent = 'Comparado con lo que guardaste en este dispositivo. Tus datos no salen de él.';
+      countUp(byId('sLost'), diff.lost.length);
+      countUp(byId('sGained'), diff.gained.length);
+      byId('nLost').textContent = String(diff.lost.length);
+      byId('nGained').textContent = String(diff.gained.length);
+    } else {
+      byId('sinceTitle').textContent = 'Guardado en este dispositivo';
+      byId('sinceNote').textContent = 'La próxima vez que subas tus datos verás quién te ha dejado de seguir. Se queda solo en tu navegador.';
+    }
+  }
+
   hide(): void {
     this.data = null;
     byId('results').classList.add('hidden');
@@ -115,8 +151,14 @@ export class ResultsView {
     this.render();
   }
 
+  private source(): Account[] {
+    if (!this.data) return [];
+    if (this.tab === 'lost' || this.tab === 'gained') return this.history?.[this.tab] ?? [];
+    return this.data[this.tab];
+  }
+
   private visible(): Account[] {
-    return this.data ? filterAndSort(this.data[this.tab], this.search.value) : [];
+    return filterAndSort(this.source(), this.search.value);
   }
 
   private row(a: Account, index: number): HTMLLIElement {
