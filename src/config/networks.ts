@@ -13,6 +13,8 @@ export interface NetworkConfig {
   name: string;
   /** Página oficial donde se pide la exportación (si existe un enlace estable). */
   exportHref?: string;
+  /** Vídeo que enseña la exportación (public/videos/<nombre>-<idioma>.mp4). */
+  video?: string;
   text: Record<Lang, NetworkText>;
   beta?: boolean;
   profileUrl: (a: Account) => string;
@@ -24,6 +26,7 @@ export const NETWORK_CONFIG: Record<Network, NetworkConfig> = {
   instagram: {
     name: 'Instagram',
     exportHref: META_EXPORT,
+    video: 'exportar-instagram',
     text: {
       es: {
         exportLinkText: 'Abrir la página de exportación',

@@ -61,6 +61,14 @@ export function applyDom(root: ParentNode = document): void {
       el.setAttribute(attr, current === 'en' ? base.replace('/screens/', '/screens/en/') : base);
     }
   });
+  // Vídeos: uno por idioma (public/videos/<nombre>-es.mp4 y -en.mp4).
+  root.querySelectorAll<HTMLVideoElement>('video[data-video]').forEach((v) => {
+    const src = `/videos/${v.dataset.video}-${current}.mp4`;
+    if (v.getAttribute('src') === src) return;
+    v.pause();
+    v.setAttribute('src', src);
+    v.setAttribute('poster', `/videos/${v.dataset.video}-${current}.jpg`);
+  });
   document.documentElement.lang = current;
   document.title = t('meta.title');
   document.querySelector('meta[name="description"]')?.setAttribute('content', t('meta.description'));

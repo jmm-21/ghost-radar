@@ -50,3 +50,20 @@ describe('idiomas', () => {
     }
   });
 });
+
+describe('vídeos', () => {
+  it('cada vídeo de la web existe en los dos idiomas, con su portada', async () => {
+    const { existsSync } = await import('node:fs');
+    const names = new Set([...html.matchAll(/data-video="([^"]+)"/g)].map((m) => m[1]!));
+    for (const net of Object.values(NETWORK_CONFIG)) if (net.video) names.add(net.video);
+    expect(names.size).toBeGreaterThan(0);
+    for (const name of names) {
+      for (const lang of LANGS) {
+        for (const ext of ['mp4', 'jpg']) {
+          const file = new URL(`../public/videos/${name}-${lang}.${ext}`, import.meta.url);
+          expect(existsSync(file), `${name}-${lang}.${ext}`).toBe(true);
+        }
+      }
+    }
+  });
+});

@@ -71,7 +71,17 @@ export class Analyzer {
       link.append(externalIcon());
     }
     box.replaceChildren(h('h3', {}, t('app.howto', { net: c.name })));
-    if (link) box.append(link);
+    if (link || c.video) {
+      const actions = h('div', { class: 'howto__actions' });
+      if (link) actions.append(link);
+      if (c.video) {
+        const watch = h('button', { class: 'vidlink', type: 'button', id: 'watchVideo' }, t('video.watch'));
+        watch.prepend(playIcon());
+        watch.addEventListener('click', openExportVideo);
+        actions.append(watch);
+      }
+      box.append(actions);
+    }
     box.append(steps, note);
   }
 
@@ -150,4 +160,35 @@ export class Analyzer {
       if (this.network === network) this.results.showHistory(diff, true);
     });
   }
+}
+
+function playIcon(): SVGSVGElement {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('width', '16');
+  svg.setAttribute('height', '16');
+  svg.setAttribute('aria-hidden', 'true');
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', 'M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z');
+  path.setAttribute('fill', 'currentColor');
+  svg.append(path);
+  return svg;
+}
+
+/** Abre el vídeo de exportación encima de la página y lo reproduce; al cerrar, se pausa. */
+function openExportVideo(): void {
+  const dialog = byId<HTMLDialogElement>('videoDialog');
+  const video = byId<HTMLVideoElement>('exportVideo');
+  dialog.showModal();
+  void video.play().catch(() => undefined);
+}
+
+export function initVideoDialog(): void {
+  const dialog = byId<HTMLDialogElement>('videoDialog');
+  const video = byId<HTMLVideoElement>('exportVideo');
+  byId('videoClose').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+  dialog.addEventListener('close', () => video.pause());
 }

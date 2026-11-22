@@ -395,6 +395,27 @@ a.open:active { transform: translateY(1px); }
 a.open:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 
 /* feedback dialog */
+/* Vídeos: vertical, en un marco con las esquinas de la marca. */
+.how__head { display: grid; gap: var(--space-lg); align-content: start; }
+.clip { margin: 0; display: grid; gap: var(--space-xs); max-width: 17rem; }
+.clip figcaption { font-size: var(--text-sm); color: var(--color-muted); }
+.clip__video { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; border-radius: var(--radius-box); background: var(--color-accent-tint); box-shadow: var(--shadow-screen); }
+.clip__video:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.howto__actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-lg); }
+.howto__actions .golink { margin: 0; }
+.vidlink { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 48px; padding: 0 var(--space-lg); border: var(--rule-hair) solid var(--color-accent); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-accent-deep); font: inherit; font-weight: 600; cursor: pointer; transition: background-color var(--dur-short) var(--ease-out); }
+.vidlink:hover { background: var(--color-accent-soft); }
+.vidlink:active { transform: translateY(1px); }
+.vidlink:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+dialog.vid { width: min(24rem, calc(100% - var(--space-lg))); max-height: calc(100dvh - var(--space-lg)); padding: var(--space-md); border: 0; border-radius: var(--radius-box); background: var(--color-surface); color: var(--color-ink); box-shadow: var(--shadow-screen); }
+dialog.vid::backdrop { background: color-mix(in oklab, var(--color-ink) 55%, transparent); }
+.vid__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin-bottom: var(--space-sm); }
+.vid__head h3 { font-size: var(--text-md); font-weight: 600; }
+.vid__close { min-height: 40px; padding: 0 var(--space-sm); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-ink); font: inherit; font-size: var(--text-sm); cursor: pointer; }
+.vid__close:hover { border-color: var(--color-accent); }
+.vid__close:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+dialog.vid .clip__video { max-height: calc(100dvh - 7rem); width: auto; margin-inline: auto; box-shadow: none; }
+
 dialog.fb { width: min(30rem, calc(100% - var(--space-xl))); padding: 0; border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-box); background: var(--color-surface); color: var(--color-ink); box-shadow: var(--shadow-screen); }
 dialog.fb::backdrop { background: color-mix(in oklab, var(--color-ink) 35%, transparent); }
 .fb form { display: grid; gap: var(--space-md); padding: var(--space-xl); }
@@ -428,7 +449,7 @@ dialog.fb::backdrop { background: color-mix(in oklab, var(--color-ink) 35%, tran
 @media (prefers-reduced-motion: reduce) {
   .ghost-big, .close__ghost svg { animation: none; }
   .js .flow > .node, .js .node--off { opacity: 1; transform: none; transition: none; }
-  .btn, .golink, .moment, .net, .tab, .list li, .drop, .drop__badge, .stars button, a.open, .score__item--go, .since__item, .lang__select { transition: none; }
+  .btn, .golink, .moment, .net, .tab, .list li, .drop, .drop__badge, .stars button, a.open, .score__item--go, .since__item, .lang__select, .vidlink { transition: none; }
   .drop:hover .drop__badge, .drop.over .drop__badge { transform: none; }
   .ring__arc { transition: none; }
 }
@@ -456,6 +477,10 @@ dialog.fb::backdrop { background: color-mix(in oklab, var(--color-ink) 35%, tran
 @media (max-width: 40rem) {
   .tabs { overflow-x: visible; }
   .tab { flex: 1 1 0; min-width: 0; flex-direction: column; gap: var(--space-3xs); min-height: 56px; padding: var(--space-xs) var(--space-2xs); font-size: var(--text-sm); white-space: normal; text-align: center; line-height: 1.15; }
+  /* Con el historial hay cinco listas: en el móvil van en dos filas para que se lean enteras. */
+  .tabs:has(.tab--hist:not(.hidden)) { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .tabs:has(.tab--hist:not(.hidden)) .tab { grid-column: span 2; }
+  .tabs:has(.tab--hist:not(.hidden)) .tab--hist { grid-column: span 3; flex-direction: row; min-height: 44px; }
   .net { padding: 0 var(--space-sm); gap: var(--space-xs); font-size: var(--text-sm); }
   .net__icon { width: 20px; height: 20px; }
   .net small { position: absolute; top: calc(-1 * var(--space-xs)); right: var(--space-xs); padding: 0 var(--space-xs); box-shadow: 0 0 0 2px var(--color-paper); }

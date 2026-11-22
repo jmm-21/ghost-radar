@@ -131,7 +131,13 @@
     <section class="how" id="como-funciona" aria-labelledby="how-h">
       <div class="container">
         <div class="how__grid">
-        <h2 id="how-h" data-i18n="nav.how">Cómo funciona</h2>
+        <div class="how__head">
+          <h2 id="how-h" data-i18n="nav.how">Cómo funciona</h2>
+          <figure class="clip">
+            <video class="clip__video" data-video="tutorial" controls playsinline preload="none" width="1080" height="1920" poster="/videos/tutorial-es.jpg" src="/videos/tutorial-es.mp4" data-i18n-aria-label="video.tutorialLabel" aria-label="Vídeo: cómo usar ghost.radar en 30 segundos"></video>
+            <figcaption data-i18n="video.tutorialCaption">ghost.radar en 30 segundos.</figcaption>
+          </figure>
+        </div>
         <ol class="steps">
           <li><span class="steps__n">1</span><h3 data-i18n="how.s1">Elige tu red</h3><p data-i18n="how.s1t">Instagram, TikTok, X o Threads.</p></li>
           <li><span class="steps__n">2</span><h3 data-i18n="how.s2">Descarga tus datos</h3><p data-i18n="how.s2t">Te guiamos paso a paso.</p></li>
@@ -259,6 +265,14 @@
     <button class="link-btn" id="fbOpen" type="button" data-i18n="foot.feedback">¿Ideas o errores? Danos tu opinión</button>
   </div>
 </footer>
+
+<dialog class="vid" id="videoDialog" aria-labelledby="videoTitle">
+  <div class="vid__head">
+    <h3 id="videoTitle" data-i18n="video.exportTitle">Cómo descargar tus datos de Instagram</h3>
+    <button class="vid__close" id="videoClose" type="button" data-i18n="video.close">Cerrar</button>
+  </div>
+  <video class="clip__video" id="exportVideo" data-video="exportar-instagram" controls playsinline preload="none" width="1080" height="1920" poster="/videos/exportar-instagram-es.jpg" src="/videos/exportar-instagram-es.mp4"></video>
+</dialog>
 
 <dialog class="fb" id="fbDialog" aria-labelledby="fbTitle">
   <form id="fbForm" method="dialog" novalidate>
