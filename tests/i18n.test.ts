@@ -58,7 +58,7 @@ describe('vídeos', () => {
     for (const net of Object.values(NETWORK_CONFIG)) if (net.video) names.add(net.video);
     expect(names.size).toBeGreaterThan(0);
     // Todo vídeo usado en la página tiene que estar en la lista fija de i18n.
-    for (const name of names) expect(Object.keys(VIDEOS)).toContain(name);
+    for (const name of names) expect(VIDEOS).toContain(name);
     for (const name of names) {
       for (const lang of LANGS) {
         for (const ext of ['mp4', 'jpg']) {
