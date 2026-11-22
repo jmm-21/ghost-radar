@@ -96,7 +96,11 @@ export function setLang(next: Lang): void {
 /** Conecta los desplegables de idioma de las cabeceras. */
 export function initLangSelect(): void {
   document.querySelectorAll<HTMLSelectElement>('select[data-lang]').forEach((s) =>
-    s.addEventListener('change', () => setLang(s.value as Lang)),
+    s.addEventListener('change', () => {
+      // Solo se aceptan los idiomas que existen; el valor del desplegable nunca se usa tal cual.
+      const next = LANGS.find((l) => l === s.value);
+      if (next) setLang(next);
+    }),
   );
   // El HTML ya viene en español: solo hay que reescribirlo si el idioma es otro.
   if (current === 'es') document.querySelectorAll<HTMLSelectElement>('select[data-lang]').forEach((s) => (s.value = 'es'));
