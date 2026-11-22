@@ -38,6 +38,9 @@ export function onLangChange(fn: (lang: Lang) => void): void {
 
 const ATTRS = ['aria-label', 'placeholder', 'alt'] as const;
 
+/** Vídeos que existen en public/videos/, cada uno en los dos idiomas. */
+export const VIDEOS = { tutorial: 'tutorial', 'exportar-instagram': 'exportar-instagram' } as const;
+
 /**
  * Traduce el HTML estático. Cada elemento marcado con `data-i18n="clave"` recibe su texto,
  * y `data-i18n-aria-label`, `data-i18n-placeholder` o `data-i18n-alt` traducen ese atributo.
@@ -62,12 +65,16 @@ export function applyDom(root: ParentNode = document): void {
     }
   });
   // Vídeos: uno por idioma (public/videos/<nombre>-es.mp4 y -en.mp4).
+  // La ruta sale de una lista fija, nunca del texto de la página.
   root.querySelectorAll<HTMLVideoElement>('video[data-video]').forEach((v) => {
-    const src = `/videos/${v.dataset.video}-${current}.mp4`;
+    const key = v.dataset.video ?? '';
+    const name = Object.hasOwn(VIDEOS, key) ? VIDEOS[key as keyof typeof VIDEOS] : null;
+    if (!name) return;
+    const src = `/videos/${name}-${current}.mp4`;
     if (v.getAttribute('src') === src) return;
     v.pause();
     v.setAttribute('src', src);
-    v.setAttribute('poster', `/videos/${v.dataset.video}-${current}.jpg`);
+    v.setAttribute('poster', `/videos/${name}-${current}.jpg`);
   });
   document.documentElement.lang = current;
   document.title = t('meta.title');
