@@ -288,9 +288,36 @@ test.describe('en iPhone', () => {
     userAgent:
       'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1',
   });
-  test('explica cómo instalarla desde Compartir', async ({ page }) => {
+  test('destaca los pasos de iPhone para instalarla', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('#iosHint')).toBeVisible();
+    await page.locator('.install__link').click();
+    const card = page.locator('.get-app__card[data-platform="ios"]');
+    await expect(card).toBeInViewport();
+    await expect(card).toHaveClass(/is-you/);
+    await expect(card).toContainText('Añadir a pantalla de inicio');
+    await expect(page.locator('.get-app__card.is-you')).toHaveCount(1);
     await expect(page.locator('#install')).toBeHidden();
+  });
+});
+
+test.describe('sección para instalar la app', () => {
+  test('se ve siempre, con los pasos de las tres plataformas', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('.install__link')).toBeVisible();
+    await expect(page.locator('#instalar')).toBeVisible();
+    await expect(page.locator('.get-app__card')).toHaveCount(3);
+    for (const p of ['ios', 'android', 'desktop']) {
+      await expect(page.locator(`.get-app__card[data-platform="${p}"]`)).toBeVisible();
+    }
+  });
+
+  test('la web no lanza errores de JavaScript al cargar', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    await page.goto('/');
+    await page.locator('#start').click();
+    await page.locator('#demo').click();
+    await expect(page.locator('#results')).toBeVisible();
+    expect(errors).toEqual([]);
   });
 });

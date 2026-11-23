@@ -30,7 +30,8 @@ function initRouter(): void {
 
 async function showPublicCounter(): Promise<void> {
   const stats = await fetchStats();
-  if (!stats || stats.totalAnalyses <= 0) return;
+  // Si la API no responde o responde algo inesperado, el contador simplemente no sale.
+  if (!stats || typeof stats.totalAnalyses !== 'number' || stats.totalAnalyses <= 0) return;
   const total = stats.totalAnalyses;
   const paint = () => {
     const el = byId('counter');

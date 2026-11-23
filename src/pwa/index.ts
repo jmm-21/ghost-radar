@@ -1,6 +1,6 @@
 import { registerSW } from 'virtual:pwa-register';
 import { byId } from '../ui/dom';
-import { isIos } from './detect';
+import { platformOf } from './detect';
 import { SHARE_CACHE, SHARE_PREFIX } from './share';
 
 /** Evento que Chrome, Edge y Android lanzan cuando la web se puede instalar. */
@@ -14,13 +14,22 @@ export const isStandalone = (): boolean =>
   (navigator as Navigator & { standalone?: boolean }).standalone === true;
 
 
-/** Botón "Instalar app" (o la explicación para iPhone), solo cuando tiene sentido. */
+/**
+ * Sección "Llévatela en el móvil": los pasos de las tres plataformas se ven siempre,
+ * y se destaca la del dispositivo actual. Si ya está instalada, no se enseña.
+ */
 function initInstall(): void {
-  const button = byId<HTMLButtonElement>('install');
-  const hint = byId('iosHint');
-  if (isStandalone()) return;
-  let deferred: InstallPromptEvent | null = null;
+  if (isStandalone()) {
+    byId('instalar').classList.add('hidden');
+    document.querySelector('.install')?.classList.add('hidden');
+    return;
+  }
+  const platform = platformOf(navigator.userAgent, navigator.maxTouchPoints);
+  document.querySelector(`.get-app__card[data-platform="${platform}"]`)?.classList.add('is-you');
 
+  // Chrome, Edge y Android ofrecen instalar con un botón: lo enseñamos solo cuando se puede.
+  const button = byId<HTMLButtonElement>('install');
+  let deferred: InstallPromptEvent | null = null;
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferred = e as InstallPromptEvent;
@@ -34,7 +43,6 @@ function initInstall(): void {
     button.classList.add('hidden');
   });
   window.addEventListener('appinstalled', () => button.classList.add('hidden'));
-  if (isIos(navigator.userAgent, navigator.maxTouchPoints)) hint.classList.remove('hidden');
 }
 
 /** Aviso discreto cuando no hay conexión: la app sigue funcionando. */

@@ -123,12 +123,13 @@ a:hover { text-decoration-color: var(--color-accent-2); }
 .counter:empty { display: none; }
 .counter b { color: var(--color-accent-deep); font-weight: 600; font-variant-numeric: tabular-nums; }
 .install { display: flex; justify-content: center; }
-.install:not(:has(:not(.hidden))) { display: none; }
 .install__btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-lg); border: var(--rule-hair) solid var(--color-accent); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-accent-deep); font: inherit; font-weight: 600; cursor: pointer; transition: background-color var(--dur-short) var(--ease-out); }
 .install__btn:hover { background: var(--color-accent-soft); }
 .install__btn:active { transform: translateY(1px); }
 .install__btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-.install__ios { max-width: 30ch; font-size: var(--text-sm); color: var(--color-ink-2); }
+.install__link { display: inline-flex; align-items: center; min-height: 44px; color: var(--color-accent-deep); font-weight: 600; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.install__link:hover { color: var(--color-ink); }
+.install__link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; border-radius: 4px; }
 
 /* Avisos abajo: sin conexión y versión nueva. */
 .toast { position: fixed; left: 50%; bottom: var(--space-md); z-index: 20; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-sm); width: max-content; max-width: calc(100% - var(--space-lg)); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-control); background: var(--color-ink); color: var(--color-paper); font-size: var(--text-sm); box-shadow: var(--shadow-screen); transform: translateX(-50%); }
@@ -154,6 +155,22 @@ a:hover { text-decoration-color: var(--color-accent-2); }
 .map h2 { color: var(--color-accent-deep); }
 .moments { padding-block: var(--section-gap-s); background: var(--color-paper); }
 .how { padding-block: var(--section-gap-l) var(--section-gap); }
+/* Llévatela en el móvil: los pasos de cada plataforma, el dispositivo actual destacado. */
+.get-app { padding-block: var(--section-gap-s); background: var(--color-accent-tint); scroll-margin-top: 4rem; }
+.get-app__head { display: grid; justify-items: start; gap: var(--space-sm); margin-bottom: var(--space-xl); }
+.get-app__head p { max-width: 44ch; color: var(--color-ink-2); font-size: var(--text-md); }
+.get-app__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-columns); list-style: none; padding: 0; }
+.get-app__card { display: grid; align-content: start; gap: var(--space-md); padding: var(--space-lg); border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-box); background: var(--color-surface); }
+.get-app__card h3 { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); font-size: var(--text-lg); font-weight: 600; }
+.get-app__you { display: none; padding: 2px var(--space-xs); border-radius: 999px; background: var(--color-accent); color: var(--color-accent-ink); font-size: var(--text-sm); font-weight: 600; }
+.get-app__card.is-you { order: -1; border-color: var(--color-accent); box-shadow: var(--shadow-orange); }
+.get-app__card.is-you .get-app__you { display: inline-block; }
+.get-app__card ol { display: grid; gap: var(--space-sm); margin: 0; padding-left: 1.4em; color: var(--color-ink-2); }
+.get-app__card ol li::marker { color: var(--color-accent-deep); font-weight: 600; }
+.get-app__card ol b { color: var(--color-ink); }
+.get-app__card > p { font-size: var(--text-sm); color: var(--color-muted); }
+.get-app__icon { display: inline-block; width: 1.25em; height: 1.25em; margin-left: 0.25em; vertical-align: -0.25em; color: var(--color-accent-deep); }
+
 .close { padding-block: var(--section-gap-s); background: var(--color-accent); color: var(--color-accent-ink); }
 .close h2 { color: var(--color-accent-ink); }
 .btn--ink { background: var(--color-ink); color: var(--color-surface); }
@@ -493,6 +510,7 @@ dialog.fb::backdrop { background: color-mix(in oklab, var(--color-ink) 35%, tran
   .tabs { overflow-x: visible; }
   .tab { flex: 1 1 0; min-width: 0; flex-direction: column; gap: var(--space-3xs); min-height: 56px; padding: var(--space-xs) var(--space-2xs); font-size: var(--text-sm); white-space: normal; text-align: center; line-height: 1.15; }
   /* Con el historial hay cinco listas: en el móvil van en dos filas para que se lean enteras. */
+  .get-app__grid { grid-template-columns: minmax(0, 1fr); }
   .tabs:has(.tab--hist:not(.hidden)) { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .tabs:has(.tab--hist:not(.hidden)) .tab { grid-column: span 2; }
   .tabs:has(.tab--hist:not(.hidden)) .tab--hist { grid-column: span 3; flex-direction: row; min-height: 44px; }
