@@ -62,10 +62,7 @@
         </div>
         <p class="hero__meta"><span class="tag tag--deep" data-i18n="hero.private">100 % privado</span> <span data-i18n="hero.for">Para Instagram, TikTok, X y Threads.</span></p>
         <p class="counter" id="counter" aria-live="polite"></p>
-        <p class="install">
-          <button class="install__btn hidden" id="install" type="button" data-i18n="pwa.install">Instalar app</button>
-          <span class="install__ios hidden" id="iosHint" data-i18n="pwa.iosHint">En iPhone, instálala desde Compartir y «Añadir a pantalla de inicio».</span>
-        </p>
+        <p class="install"><a class="install__link" href="#instalar" data-i18n="app2.link">Instálala como app y úsala sin conexión</a></p>
       </div>
     </section>
 
@@ -150,6 +147,43 @@
         </ol>
         </div>
       </div>
+    </section>
+
+    <section class="get-app" id="instalar" aria-labelledby="app-h">
+     <div class="container">
+      <div class="get-app__head">
+        <h2 id="app-h" data-i18n="app2.title">Llévatela en el móvil</h2>
+        <p data-i18n="app2.lead">Se instala como una app, sin pasar por ninguna tienda, y funciona sin conexión.</p>
+        <button class="install__btn hidden" id="install" type="button" data-i18n="pwa.install">Instalar app</button>
+      </div>
+      <ul class="get-app__grid">
+        <li class="get-app__card" data-platform="ios">
+          <h3><span data-i18n="app2.ios">iPhone y iPad</span> <span class="get-app__you" data-i18n="app2.you">Tu dispositivo</span></h3>
+          <ol>
+            <li data-i18n="app2.ios1">Abre esta web en <b>Safari</b>.</li>
+            <li><span data-i18n="app2.ios2">Pulsa <b>Compartir</b> (si no lo ves, está dentro de <b>···</b>)</span> <svg class="get-app__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 11H6.5A1.5 1.5 0 0 0 5 12.5v7A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5H16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></li>
+            <li data-i18n="app2.ios3">Elige <b>Añadir a pantalla de inicio</b> y pulsa <b>Añadir</b>.</li>
+          </ol>
+        </li>
+        <li class="get-app__card" data-platform="android">
+          <h3><span>Android</span> <span class="get-app__you" data-i18n="app2.you">Tu dispositivo</span></h3>
+          <ol>
+            <li data-i18n="app2.and1">Abre esta web en <b>Chrome</b>.</li>
+            <li><span data-i18n="app2.and2">Pulsa el menú</span> <svg class="get-app__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg></li>
+            <li data-i18n="app2.and3">Elige <b>Instalar aplicación</b> o <b>Añadir a pantalla de inicio</b>.</li>
+          </ol>
+          <p data-i18n="app2.andExtra">Después podrás compartir el .zip directamente a ghost.radar.</p>
+        </li>
+        <li class="get-app__card" data-platform="desktop">
+          <h3><span data-i18n="app2.desk">Ordenador</span> <span class="get-app__you" data-i18n="app2.you">Tu dispositivo</span></h3>
+          <ol>
+            <li data-i18n="app2.desk1">Abre esta web en <b>Chrome</b> o <b>Edge</b>.</li>
+            <li><span data-i18n="app2.desk2">Pulsa el icono de instalar en la barra de direcciones</span> <svg class="get-app__icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7.5v6M9.5 11l2.5 2.5 2.5-2.5M8 21h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+            <li data-i18n="app2.desk3">Confirma con <b>Instalar</b>.</li>
+          </ol>
+        </li>
+      </ul>
+     </div>
     </section>
 
     <section class="close" aria-labelledby="close-h">

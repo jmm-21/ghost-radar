@@ -2,7 +2,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import { loadEnv, type Plugin, type ViteDevServer } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
-import { SHARE_ACTION, SHARE_FIELD } from './src/pwa/share';
+import { SHARE_ACTION, SHARE_FIELD } from './src/pwa/share.ts';
 
 /**
  * PWA: la web se puede instalar como app, funciona sin conexión y, en Android,

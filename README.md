@@ -166,7 +166,7 @@ flowchart LR
 
 | Fase | Qué comprueba | Falla si… |
 |---|---|---|
-| **Tipos, tests y build** | TypeScript estricto, 51 tests unitarios, build de producción | hay un error de tipos, un test falla o la cobertura baja del mínimo |
+| **Tipos, tests y build** | TypeScript estricto, 52 tests unitarios, build de producción | hay un error de tipos, un test falla o la cobertura baja del mínimo |
 | **E2E** | Un Chrome real sube un `.zip` de Instagram, comprueba las tres listas, el buscador, los errores, la demo de cada red y que **el archivo no se envía a ningún servidor** | algo de eso no se cumple, en escritorio o en móvil |
 | **Lighthouse** | Rendimiento, accesibilidad, buenas prácticas y SEO | alguna nota baja de 90 (95 en accesibilidad y SEO) |
 | **Despliegue** | Publica en Vercel desde Actions y comprueba que la web responde | la web no devuelve 200 tras publicar |
