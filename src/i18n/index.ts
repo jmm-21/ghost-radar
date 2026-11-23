@@ -38,6 +38,9 @@ export function onLangChange(fn: (lang: Lang) => void): void {
 
 const ATTRS = ['aria-label', 'placeholder', 'alt'] as const;
 
+/** Vídeos que existen en public/videos/, cada uno en los dos idiomas. */
+export const VIDEOS = ['tutorial', 'exportar-instagram'] as const;
+
 /**
  * Traduce el HTML estático. Cada elemento marcado con `data-i18n="clave"` recibe su texto,
  * y `data-i18n-aria-label`, `data-i18n-placeholder` o `data-i18n-alt` traducen ese atributo.
@@ -61,6 +64,17 @@ export function applyDom(root: ParentNode = document): void {
       el.setAttribute(attr, current === 'en' ? base.replace('/screens/', '/screens/en/') : base);
     }
   });
+  // Vídeos: uno por idioma (public/videos/<nombre>-es.mp4 y -en.mp4).
+  // La ruta sale de una lista fija, nunca del texto de la página.
+  root.querySelectorAll<HTMLVideoElement>('video[data-video]').forEach((v) => {
+    const name = VIDEOS.find((n) => n === v.dataset.video);
+    if (!name) return;
+    const src = `/videos/${name}-${current}.mp4`;
+    if (v.getAttribute('src') === src) return;
+    v.pause();
+    v.setAttribute('src', src);
+    v.setAttribute('poster', `/videos/${name}-${current}.jpg`);
+  });
   document.documentElement.lang = current;
   document.title = t('meta.title');
   document.querySelector('meta[name="description"]')?.setAttribute('content', t('meta.description'));
@@ -82,7 +96,11 @@ export function setLang(next: Lang): void {
 /** Conecta los desplegables de idioma de las cabeceras. */
 export function initLangSelect(): void {
   document.querySelectorAll<HTMLSelectElement>('select[data-lang]').forEach((s) =>
-    s.addEventListener('change', () => setLang(s.value as Lang)),
+    s.addEventListener('change', () => {
+      // Solo se aceptan los idiomas que existen; el valor del desplegable nunca se usa tal cual.
+      const next = LANGS.find((l) => l === s.value);
+      if (next) setLang(next);
+    }),
   );
   // El HTML ya viene en español: solo hay que reescribirlo si el idioma es otro.
   if (current === 'es') document.querySelectorAll<HTMLSelectElement>('select[data-lang]').forEach((s) => (s.value = 'es'));

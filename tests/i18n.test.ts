@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { NETWORK_CONFIG } from '../src/config/networks';
-import { detectLang, LANGS, t } from '../src/i18n';
+import { detectLang, LANGS, t, VIDEOS } from '../src/i18n';
 import { STRINGS } from '../src/i18n/strings';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
@@ -47,6 +47,25 @@ describe('idiomas', () => {
     for (const net of Object.values(NETWORK_CONFIG)) {
       expect(net.text.en.steps.length).toBe(net.text.es.steps.length);
       expect(Boolean(net.text.en.exportLinkText)).toBe(Boolean(net.text.es.exportLinkText));
+    }
+  });
+});
+
+describe('vídeos', () => {
+  it('cada vídeo de la web existe en los dos idiomas, con su portada', async () => {
+    const { existsSync } = await import('node:fs');
+    const names = new Set([...html.matchAll(/data-video="([^"]+)"/g)].map((m) => m[1]!));
+    for (const net of Object.values(NETWORK_CONFIG)) if (net.video) names.add(net.video);
+    expect(names.size).toBeGreaterThan(0);
+    // Todo vídeo usado en la página tiene que estar en la lista fija de i18n.
+    for (const name of names) expect(VIDEOS).toContain(name);
+    for (const name of names) {
+      for (const lang of LANGS) {
+        for (const ext of ['mp4', 'jpg']) {
+          const file = new URL(`../public/videos/${name}-${lang}.${ext}`, import.meta.url);
+          expect(existsSync(file), `${name}-${lang}.${ext}`).toBe(true);
+        }
+      }
     }
   });
 });

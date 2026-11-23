@@ -121,6 +121,13 @@ const es = {
   'hist.gained': 'Nuevos seguidores',
   'hist.clear': 'Borrar historial',
 
+  // Vídeos
+  'video.watch': 'Ver el vídeo (40 s)',
+  'video.exportTitle': 'Cómo descargar tus datos de Instagram',
+  'video.close': 'Cerrar',
+  'video.tutorialLabel': 'Vídeo: cómo usar ghost.radar en 30 segundos',
+  'video.tutorialCaption': 'ghost.radar en 30 segundos.',
+
   // Pie y opiniones
   'foot.text':
     'Todo se procesa en tu navegador. Tus archivos no salen de tu dispositivo. ¿Facebook o LinkedIn? Allí las amistades y conexiones son siempre mutuas, así que no hay nada que comparar.',
@@ -205,7 +212,7 @@ const en: Record<StringKey, string> = {
   'status.nor': ' or ',
 
   'res.label': 'Your {net} results',
-  'res.ring': 'of the accounts you follow follow you back',
+  'res.ring': 'follow you back, out of everyone you follow',
   'res.followers': 'Followers',
   'res.following': 'Following',
   'res.notBack': 'Don’t follow you back',
@@ -255,6 +262,12 @@ const en: Record<StringKey, string> = {
   'hist.lost': 'Unfollowed you',
   'hist.gained': 'New followers',
   'hist.clear': 'Clear history',
+
+  'video.watch': 'Watch the video (40 s)',
+  'video.exportTitle': 'How to download your Instagram data',
+  'video.close': 'Close',
+  'video.tutorialLabel': 'Video: how to use ghost.radar in 30 seconds',
+  'video.tutorialCaption': 'ghost.radar in 30 seconds.',
 
   'foot.text':
     'Everything is processed in your browser. Your files never leave your device. Facebook or LinkedIn? Friendships and connections there are always mutual, so there’s nothing to compare.',

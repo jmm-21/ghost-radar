@@ -171,3 +171,35 @@ test('las capturas de la portada cambian de idioma', async ({ page }) => {
   await expect(shot).toHaveAttribute('src', '/screens/en/resultados.png');
   expect(await shot.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
 });
+
+test('el vídeo de exportar se abre desde las instrucciones de Instagram', async ({ page }) => {
+  await openTool(page);
+  await page.locator('#watchVideo').click();
+  const dialog = page.locator('#videoDialog');
+  await expect(dialog).toBeVisible();
+  const video = page.locator('#exportVideo');
+  await expect(video).toHaveAttribute('src', '/videos/exportar-instagram-es.mp4');
+  // El vídeo existe y el navegador puede leerlo.
+  await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.readyState)).toBeGreaterThan(0);
+  expect(await video.evaluate((v: HTMLVideoElement) => v.duration)).toBeGreaterThan(30);
+  await page.locator('#videoClose').click();
+  await expect(dialog).toBeHidden();
+  expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+
+  // Solo Instagram tiene vídeo por ahora.
+  await page.locator('.net[data-net="tiktok"]').click();
+  await expect(page.locator('#watchVideo')).toHaveCount(0);
+});
+
+test('los vídeos cambian de idioma', async ({ page }) => {
+  await page.goto('/');
+  const tutorial = page.locator('video[data-video="tutorial"]');
+  await expect(tutorial).toHaveAttribute('src', '/videos/tutorial-es.mp4');
+  await page.locator('.bar--home select[data-lang]').selectOption('en');
+  await expect(tutorial).toHaveAttribute('src', '/videos/tutorial-en.mp4');
+  await expect(tutorial).toHaveAttribute('poster', '/videos/tutorial-en.jpg');
+  await expect(page.locator('#exportVideo')).toHaveAttribute('src', '/videos/exportar-instagram-en.mp4');
+  for (const url of ['/videos/tutorial-en.mp4', '/videos/tutorial-en.jpg', '/videos/exportar-instagram-en.mp4']) {
+    expect((await page.request.head(url)).status(), url).toBe(200);
+  }
+});
