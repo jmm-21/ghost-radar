@@ -1,6 +1,62 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { loadEnv, type Plugin, type ViteDevServer } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
+import { SHARE_ACTION, SHARE_FIELD } from './src/pwa/share';
+
+/**
+ * PWA: la web se puede instalar como app, funciona sin conexión y, en Android,
+ * aparece en el menú "Compartir" para analizar el .zip directamente.
+ */
+const pwa = () =>
+  VitePWA({
+    strategies: 'injectManifest',
+    srcDir: 'sw',
+    filename: 'sw.ts',
+    registerType: 'prompt',
+    injectRegister: false,
+    injectManifest: {
+      globPatterns: ['**/*.{js,css,html,woff2,svg,png,webmanifest}'],
+      // Lo pesado y opcional (capturas, vídeos, imagen para redes) no se descarga por adelantado.
+      globIgnores: ['screens/**', 'videos/**', 'og-image.png'],
+    },
+    manifest: {
+      id: '/',
+      name: 'ghost.radar · ¿Quién no me sigue?',
+      short_name: 'ghost.radar',
+      description: 'Descubre quién no te sigue de vuelta en Instagram, TikTok, X y Threads. Sin contraseñas y sin conexión.',
+      lang: 'es',
+      dir: 'ltr',
+      start_url: '/#analizar',
+      scope: '/',
+      display: 'standalone',
+      background_color: '#faf8f5',
+      theme_color: '#faf8f5',
+      categories: ['social', 'utilities'],
+      icons: [
+        { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: '/icons/maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+      ],
+      screenshots: [
+        { src: '/screens/movil-resumen.png', sizes: '780x1044', type: 'image/png', form_factor: 'narrow', label: 'Resumen de un análisis' },
+        { src: '/screens/resultados.png', sizes: '2560x1404', type: 'image/png', form_factor: 'wide', label: 'Resultados en el ordenador' },
+      ],
+      share_target: {
+        action: SHARE_ACTION,
+        method: 'POST',
+        enctype: 'multipart/form-data',
+        params: {
+          files: [
+            {
+              name: SHARE_FIELD,
+              accept: ['application/zip', 'application/x-zip-compressed', '.zip', 'application/json', '.json', 'text/plain', '.txt', 'text/javascript', '.js'],
+            },
+          ],
+        },
+      },
+    },
+  });
 
 /**
  * En desarrollo, sirve las funciones de `api/` desde el propio servidor de Vite,
@@ -54,7 +110,7 @@ export default defineConfig(({ mode }) => {
   // Las funciones de api/ leen process.env: en desarrollo cargamos ahí .env.local.
   Object.assign(process.env, loadEnv(mode, process.cwd(), ''));
   return {
-    plugins: [devApi()],
+    plugins: [devApi(), pwa()],
     build: { target: 'es2022', sourcemap: true },
     test: {
       environment: 'node',

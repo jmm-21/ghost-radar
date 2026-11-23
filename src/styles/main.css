@@ -122,6 +122,21 @@ a:hover { text-decoration-color: var(--color-accent-2); }
 .counter { font-size: var(--text-sm); color: var(--color-muted); }
 .counter:empty { display: none; }
 .counter b { color: var(--color-accent-deep); font-weight: 600; font-variant-numeric: tabular-nums; }
+.install { display: flex; justify-content: center; }
+.install:not(:has(:not(.hidden))) { display: none; }
+.install__btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-lg); border: var(--rule-hair) solid var(--color-accent); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-accent-deep); font: inherit; font-weight: 600; cursor: pointer; transition: background-color var(--dur-short) var(--ease-out); }
+.install__btn:hover { background: var(--color-accent-soft); }
+.install__btn:active { transform: translateY(1px); }
+.install__btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.install__ios { max-width: 30ch; font-size: var(--text-sm); color: var(--color-ink-2); }
+
+/* Avisos abajo: sin conexión y versión nueva. */
+.toast { position: fixed; left: 50%; bottom: var(--space-md); z-index: 20; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-sm); width: max-content; max-width: calc(100% - var(--space-lg)); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-control); background: var(--color-ink); color: var(--color-paper); font-size: var(--text-sm); box-shadow: var(--shadow-screen); transform: translateX(-50%); }
+.toast--update { bottom: calc(var(--space-md) + 3.5rem); }
+.toast__btn, .toast__later { min-height: 36px; padding: 0 var(--space-sm); border-radius: var(--radius-control); font: inherit; font-weight: 600; cursor: pointer; }
+.toast__btn { border: 0; background: var(--color-accent); color: var(--color-accent-ink); }
+.toast__later { border: var(--rule-hair) solid color-mix(in oklab, var(--color-paper) 40%, transparent); background: none; color: var(--color-paper); }
+.toast__btn:focus-visible, .toast__later:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 .ghost-big { width: var(--ghost-size); height: var(--ghost-size); animation: float 3.6s var(--ease-in-out) infinite; }
 @keyframes float { 50% { transform: translateY(-8px); } }
 
@@ -449,7 +464,7 @@ dialog.fb::backdrop { background: color-mix(in oklab, var(--color-ink) 35%, tran
 @media (prefers-reduced-motion: reduce) {
   .ghost-big, .close__ghost svg { animation: none; }
   .js .flow > .node, .js .node--off { opacity: 1; transform: none; transition: none; }
-  .btn, .golink, .moment, .net, .tab, .list li, .drop, .drop__badge, .stars button, a.open, .score__item--go, .since__item, .lang__select, .vidlink { transition: none; }
+  .btn, .golink, .moment, .net, .tab, .list li, .drop, .drop__badge, .stars button, a.open, .score__item--go, .since__item, .lang__select, .vidlink, .install__btn { transition: none; }
   .drop:hover .drop__badge, .drop.over .drop__badge { transform: none; }
   .ring__arc { transition: none; }
 }

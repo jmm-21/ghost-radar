@@ -203,3 +203,94 @@ test('los vídeos cambian de idioma', async ({ page }) => {
     expect((await page.request.head(url)).status(), url).toBe(200);
   }
 });
+
+test.describe('app instalable y sin conexión', () => {
+  /** Espera a que el service worker controle la página y tenga la web guardada. */
+  async function waitForServiceWorker(page: Page) {
+    await page.evaluate(async () => {
+      await navigator.serviceWorker.ready;
+      if (!navigator.serviceWorker.controller) {
+        await new Promise((resolve) => navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true }));
+      }
+    });
+  }
+
+  test('el manifest permite instalarla y recibir archivos compartidos', async ({ page }) => {
+    const res = await page.request.get('/manifest.webmanifest');
+    expect(res.ok()).toBe(true);
+    const manifest = await res.json();
+    expect(manifest.display).toBe('standalone');
+    expect(manifest.start_url).toBe('/#analizar');
+    const sizes = manifest.icons.map((i: { sizes: string; purpose: string }) => `${i.sizes}:${i.purpose}`);
+    expect(sizes).toEqual(expect.arrayContaining(['192x192:any', '512x512:any', '512x512:maskable']));
+    for (const icon of manifest.icons) expect((await page.request.head(icon.src)).status(), icon.src).toBe(200);
+    expect(manifest.share_target).toMatchObject({ action: '/compartir', method: 'POST', enctype: 'multipart/form-data' });
+  });
+
+  test('Chrome la considera instalable', async ({ page, context }) => {
+    await page.goto('/');
+    await waitForServiceWorker(page);
+    const cdp = await context.newCDPSession(page);
+    const { installabilityErrors } = await cdp.send('Page.getInstallabilityErrors');
+    // El navegador de los tests es "de incógnito", donde nunca se instala nada: ese motivo se ignora.
+    expect(installabilityErrors.filter((e) => e.errorId !== 'in-incognito')).toEqual([]);
+  });
+
+  test('sin conexión la web carga y analiza igual', async ({ page, context }) => {
+    await page.goto('/');
+    await waitForServiceWorker(page);
+
+    await context.setOffline(true);
+    await page.goto('/#analizar');
+    await expect(page.getByRole('heading', { name: '¿Qué red quieres analizar?' })).toBeVisible();
+    await expect(page.locator('#offline')).toBeVisible();
+
+    const zip = await instagramZip(['ana', 'luis'], ['ana', 'pepe']);
+    await page.locator('#file').setInputFiles({ name: 'instagram.zip', mimeType: 'application/zip', buffer: zip });
+    await expect(page.locator('#nNotBack')).toHaveText('1');
+    await expect(page.locator('#list')).toContainText('pepe');
+
+    await context.setOffline(false);
+    await expect(page.locator('#offline')).toBeHidden();
+  });
+
+  test('"Compartir → ghost.radar" analiza el archivo directamente', async ({ page }) => {
+    await page.goto('/');
+    await waitForServiceWorker(page);
+
+    // Simula lo que hace Android al compartir: un POST multipart a /compartir.
+    await page.evaluate(() => {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/compartir';
+      form.enctype = 'multipart/form-data';
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.name = 'archivos';
+      input.id = 'shareInput';
+      form.append(input);
+      document.body.append(form);
+    });
+    const zip = await instagramZip(['ana', 'luis', 'marta'], ['ana', 'pepe']);
+    await page.locator('#shareInput').setInputFiles({ name: 'instagram.zip', mimeType: 'application/zip', buffer: zip });
+    await page.evaluate(() => document.querySelector<HTMLFormElement>('form[action="/compartir"]')!.submit());
+
+    await expect(page).toHaveURL(/#analizar$/);
+    expect(page.url()).not.toContain('compartido');
+    await expect(page.locator('#results')).toBeVisible();
+    await expect(page.locator('#nNotBack')).toHaveText('1');
+    await expect(page.locator('#nFans')).toHaveText('2');
+  });
+});
+
+test.describe('en iPhone', () => {
+  test.use({
+    userAgent:
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1',
+  });
+  test('explica cómo instalarla desde Compartir', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#iosHint')).toBeVisible();
+    await expect(page.locator('#install')).toBeHidden();
+  });
+});

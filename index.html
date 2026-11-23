@@ -8,6 +8,7 @@
 <meta name="keywords" content="ghost radar, ghost.radar, quién no me sigue, unfollowers, no me siguen de vuelta, instagram, tiktok, seguidores">
 <meta name="author" content="Jorge Méndez Martínez">
 <meta name="google-site-verification" content="JJ3HuvWjcvFUtuE4CMZ56NCmL8CquGAcz_bHuf3Z13s" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <link rel="canonical" href="https://ghost-radar-rrss.vercel.app/">
 <meta property="og:locale:alternate" content="en_GB">
 <meta name="theme-color" content="#faf8f5">
@@ -61,6 +62,10 @@
         </div>
         <p class="hero__meta"><span class="tag tag--deep" data-i18n="hero.private">100 % privado</span> <span data-i18n="hero.for">Para Instagram, TikTok, X y Threads.</span></p>
         <p class="counter" id="counter" aria-live="polite"></p>
+        <p class="install">
+          <button class="install__btn hidden" id="install" type="button" data-i18n="pwa.install">Instalar app</button>
+          <span class="install__ios hidden" id="iosHint" data-i18n="pwa.iosHint">En iPhone, instálala desde Compartir y «Añadir a pantalla de inicio».</span>
+        </p>
       </div>
     </section>
 
@@ -265,6 +270,13 @@
     <button class="link-btn" id="fbOpen" type="button" data-i18n="foot.feedback">¿Ideas o errores? Danos tu opinión</button>
   </div>
 </footer>
+
+<div class="toast hidden" id="offline" role="status" data-i18n="pwa.offline">Sin conexión. Todo sigue funcionando.</div>
+<div class="toast toast--update hidden" id="update" role="status">
+  <span data-i18n="pwa.update">Hay una versión nueva de ghost.radar.</span>
+  <button class="toast__btn" id="updateBtn" type="button" data-i18n="pwa.updateBtn">Actualizar</button>
+  <button class="toast__later" id="updateLater" type="button" data-i18n="pwa.later">Ahora no</button>
+</div>
 
 <dialog class="vid" id="videoDialog" aria-labelledby="videoTitle">
   <div class="vid__head">

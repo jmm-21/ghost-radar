@@ -128,6 +128,15 @@ const es = {
   'video.tutorialLabel': 'Vídeo: cómo usar ghost.radar en 30 segundos',
   'video.tutorialCaption': 'ghost.radar en 30 segundos.',
 
+  // App instalable y sin conexión
+  'pwa.install': 'Instalar app',
+  'pwa.iosHint': 'En iPhone, instálala desde Compartir y «Añadir a pantalla de inicio».',
+  'pwa.offline': 'Sin conexión. Todo sigue funcionando.',
+  'pwa.update': 'Hay una versión nueva de ghost.radar.',
+  'pwa.updateBtn': 'Actualizar',
+  'pwa.later': 'Ahora no',
+  'pwa.sharedNone': 'No ha llegado ningún archivo. Elígelo aquí abajo.',
+
   // Pie y opiniones
   'foot.text':
     'Todo se procesa en tu navegador. Tus archivos no salen de tu dispositivo. ¿Facebook o LinkedIn? Allí las amistades y conexiones son siempre mutuas, así que no hay nada que comparar.',
@@ -268,6 +277,14 @@ const en: Record<StringKey, string> = {
   'video.close': 'Close',
   'video.tutorialLabel': 'Video: how to use ghost.radar in 30 seconds',
   'video.tutorialCaption': 'ghost.radar in 30 seconds.',
+
+  'pwa.install': 'Install app',
+  'pwa.iosHint': 'On iPhone, install it from Share, then “Add to Home Screen”.',
+  'pwa.offline': 'Offline. Everything still works.',
+  'pwa.update': 'A new version of ghost.radar is available.',
+  'pwa.updateBtn': 'Update',
+  'pwa.later': 'Not now',
+  'pwa.sharedNone': 'No file came through. Choose it below.',
 
   'foot.text':
     'Everything is processed in your browser. Your files never leave your device. Facebook or LinkedIn? Friendships and connections there are always mutual, so there’s nothing to compare.',
