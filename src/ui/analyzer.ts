@@ -121,6 +121,12 @@ export class Analyzer {
     this.status.className = `status${isError ? ' err' : ''}`;
   }
 
+  /** Analiza archivos que llegan desde fuera (por ejemplo, "Compartir → ghost.radar" en Android). */
+  async analyzeShared(files: File[]): Promise<void> {
+    if (files.length) await this.handleFiles(files);
+    else this.setStatus(t('pwa.sharedNone'), true);
+  }
+
   private async handleFiles(files: File[]): Promise<void> {
     if (!files.length) return;
     this.setStatus(t('status.analyzing'));

@@ -108,3 +108,12 @@ describe('almacenamiento', () => {
     expect(createStore({}).kind).toBe('memory');
   });
 });
+
+describe('compartir (respaldo sin service worker)', () => {
+  it('abre la herramienta', async () => {
+    const { POST } = await import('../api/compartir');
+    const res = POST();
+    expect(res.status).toBe(303);
+    expect(res.headers.get('Location')).toBe('/?compartido=1#analizar');
+  });
+});
