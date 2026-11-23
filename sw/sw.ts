@@ -60,6 +60,10 @@ async function receiveShare(request: Request): Promise<Response> {
 self.addEventListener('activate', (event) => event.waitUntil(self.clients.claim()));
 
 // La app pide activar la versión nueva cuando la persona pulsa "Actualizar".
+// Solo se aceptan mensajes de páginas de la propia web.
 self.addEventListener('message', (event) => {
+  const source = event.source;
+  if (!(source instanceof Client)) return;
+  if (new URL(source.url).origin !== self.location.origin) return;
   if ((event.data as { type?: string } | null)?.type === 'SKIP_WAITING') void self.skipWaiting();
 });
