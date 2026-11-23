@@ -5,12 +5,13 @@
 # ghost.radar
 
 **Descubre quién no te sigue de vuelta en Instagram, TikTok, X y Threads.**
-Sin contraseñas, sin extensiones y sin que tus datos salgan de tu dispositivo.
+Sin contraseñas, sin extensiones y sin que tus datos salgan de tu dispositivo. Se instala como app y funciona sin conexión.
 
 [![CI/CD](https://github.com/jmm-21/ghost-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/jmm-21/ghost-radar/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/jmm-21/ghost-radar/actions/workflows/codeql.yml/badge.svg)](https://github.com/jmm-21/ghost-radar/actions/workflows/codeql.yml)
 ![Cobertura](https://img.shields.io/badge/cobertura-91%25-brightgreen)
-![Lighthouse](https://img.shields.io/badge/Lighthouse-99%20%C2%B7%20100%20%C2%B7%2096%20%C2%B7%20100-f26522?logo=lighthouse&logoColor=white)
+![Lighthouse](https://img.shields.io/badge/Lighthouse-95%2B%20%C2%B7%20100%20%C2%B7%2096%20%C2%B7%20100-f26522?logo=lighthouse&logoColor=white)
+![PWA](https://img.shields.io/badge/PWA-instalable%20y%20sin%20conexi%C3%B3n-f26522)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-Vitest%20%2B%20Playwright-6e9f18?logo=vitest&logoColor=white)
@@ -61,6 +62,8 @@ flowchart LR
         UI["UI<br/>src/ui"] --> Core["Lógica pura<br/>src/core<br/>parse · compare"]
         UI --> Client["Cliente API<br/>src/services"]
         ZIP[".zip oficial"] -->|JSZip| Core
+        UI --> IDB[("IndexedDB<br/>historial")]
+        SW["Service worker<br/>sw/sw.ts"] -.->|"copia sin conexión<br/>y archivos compartidos"| UI
     end
 
     subgraph Vercel["☁️ Vercel"]
@@ -82,6 +85,7 @@ Decisiones principales (ver [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)):
 - **Lógica pura y testeable.** Leer y comparar los archivos no depende del DOM ni de la red, así que se prueba con tests unitarios.
 - **Contrato compartido.** `shared/types.ts` define los tipos que usan el frontend y la API. Si uno cambia sin el otro, TypeScript da error.
 - **Handlers independientes de la plataforma.** Reciben un `Request` y devuelven un `Response` estándar. Funcionan igual en Vercel, en el servidor de desarrollo y en los tests.
+- **Primero sin conexión.** Como el análisis ya ocurre en el navegador, un service worker (Workbox) guarda la web la primera vez y todo funciona sin internet. La API es opcional: si no responde, solo desaparecen el contador y las opiniones.
 - **Inversión de dependencias en el almacenamiento.** Los handlers usan la interfaz `Store`. En producción hay Redis y en desarrollo, memoria, así que el proyecto arranca sin configurar nada.
 
 ### Estructura
@@ -93,9 +97,11 @@ ghost-radar/
 │   ├── core/               # Lógica pura: lectores de cada red, comparación, .zip
 │   ├── config/             # Instrucciones y enlaces de cada red social (en los dos idiomas)
 │   ├── i18n/               # Textos en español e inglés y cambio de idioma
+│   ├── pwa/                # Instalación, aviso de versión nueva, sin conexión y archivos compartidos
 │   ├── ui/                 # Componentes de interfaz (sin frameworks, sin innerHTML con datos del usuario)
 │   ├── services/           # Cliente HTTP de la API
 │   └── styles/             # CSS (tokens y tema claro naranja)
+├── public/                 # Iconos de la app, capturas y vídeos (es/en)
 ├── shared/                 # Tipos compartidos frontend ↔ backend
 ├── api/                    # Puntos de entrada serverless (Vercel)
 ├── server/
@@ -116,6 +122,7 @@ ghost-radar/
 | `GET` | `/api/stats` | Contador público de análisis por red (con caché en el CDN de 60 s). |
 | `POST` | `/api/feedback` | Envía una opinión `{ message, rating?, contact? }`. Límite: 5/hora. |
 | `GET` | `/api/feedback` | Lista las opiniones. Requiere `Authorization: Bearer $ADMIN_TOKEN`. |
+| `POST` | `/compartir` | Respaldo de "Compartir → ghost.radar" en Android. Normalmente lo atiende el service worker; si no, solo abre la herramienta (no guarda nada). |
 
 ## 🌐 Formatos soportados
 
@@ -167,7 +174,7 @@ flowchart LR
 | Fase | Qué comprueba | Falla si… |
 |---|---|---|
 | **Tipos, tests y build** | TypeScript estricto, 52 tests unitarios, build de producción | hay un error de tipos, un test falla o la cobertura baja del mínimo |
-| **E2E** | Un Chrome real sube un `.zip` de Instagram, comprueba las tres listas, el buscador, los errores, la demo de cada red y que **el archivo no se envía a ningún servidor** | algo de eso no se cumple, en escritorio o en móvil |
+| **E2E** | Un Chrome real, en escritorio y móvil, usa la app como una persona: sube un `.zip` y comprueba las listas, el buscador, los errores y el historial; cambia de idioma; abre los vídeos; **corta la conexión** y vuelve a analizar; simula **"Compartir"** desde Android; pregunta a Chrome si la app es **instalable**; y comprueba que **el archivo no se envía a ningún servidor** y que la página no lanza errores | algo de eso no se cumple |
 | **Lighthouse** | Rendimiento, accesibilidad, buenas prácticas y SEO | alguna nota baja de 90 (95 en accesibilidad y SEO) |
 | **Despliegue** | Publica en Vercel desde Actions y comprueba que la web responde | la web no devuelve 200 tras publicar |
 
@@ -186,14 +193,19 @@ Se despliega en **Vercel**, gratis: la web va al CDN y `api/` se convierte en fu
 - Política de seguridad de contenido estricta: sin scripts ni estilos en línea, y solo se conecta a su propio dominio.
 - Validación de todas las entradas en el servidor y límite de tamaño del cuerpo de las peticiones.
 - Límite de peticiones por cliente anónimo.
-- El texto del usuario nunca se inserta como HTML.
+- El texto del usuario nunca se inserta como HTML, y los valores que salen de la página (idioma, nombre de un vídeo) se validan contra listas fijas antes de usarse.
+- El service worker solo acepta mensajes de la propia web.
+- **CodeQL** revisa cada pull request; sus avisos se corrigen en la misma PR antes de fusionar.
 
 ## 🗺️ Próximos pasos
 
 - [x] Historial local: ver **quién te ha dejado de seguir** desde el último análisis (IndexedDB, sin salir del dispositivo).
-- [ ] Instalable como app (PWA) y funcionamiento sin conexión.
-- [ ] Exportar resultados a CSV.
+- [x] Instalable como app (PWA), funcionamiento sin conexión y "Compartir → ghost.radar" en Android.
 - [x] Versión en inglés.
+- [x] Vídeos de uso y de exportación, en los dos idiomas.
+- [ ] Exportar resultados a CSV.
+- [ ] Tests E2E también en Safari (WebKit) y Firefox.
+- [ ] Versión inglesa con su propia dirección (`/en/`) para que Google la indexe aparte.
 
 ## 👤 Autor
 
