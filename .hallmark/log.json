@@ -1,0 +1,89 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "restyle",
+  "scope": "site",
+  "theme": "coral",
+  "axes": "light/grotesk-sans/warm",
+  "shape": "kept",
+  "signature": "white ghost on the orange closing band",
+  "waived": [
+   "38iii"
+  ],
+  "prompt": "todo en naranja, más vida sin más colores",
+  "date": "2026-11-20"
+ },
+ {
+  "mode": "redesign",
+  "depth": "restyle",
+  "scope": "app",
+  "theme": "coral",
+  "axes": "light/grotesk-sans/warm",
+  "shape": "app screen",
+  "signature": "the chosen network in solid orange beside the platforms own marks",
+  "waived": [],
+  "prompt": "dar más vida a la pantalla de la herramienta",
+  "date": "2026-11-20"
+ },
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "page",
+  "shape": "Showcase-led (Stat-Led swapped)",
+  "theme": "coral",
+  "axes": "light/grotesk-sans/warm",
+  "hero": "Banner",
+  "nav": "edge-aligned",
+  "footer": "colophon block",
+  "imagery": "screenshots 8 (capture.mjs), product with sample data",
+  "photos": [],
+  "entry": "one reveal on the map nodes",
+  "fingerprint": "218d71",
+  "sections": [
+   "hero",
+   "showcase",
+   "map",
+   "switcher",
+   "rows steps",
+   "close with phone screen",
+   "footer"
+  ],
+  "signature": "the results screen at full width under the hero",
+  "waived": [
+   "59",
+   "39b"
+  ],
+  "prompt": "herramienta web minimalista para jóvenes hasta 30 años, naranja y morado",
+  "date": "2026-11-20"
+ },
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "page",
+  "shape": "Map / Diagram",
+  "theme": "arcade",
+  "axes": "dark/pixel/chromatic-ember",
+  "hero": "Banner",
+  "nav": "banner over a sticky bar",
+  "footer": "mast",
+  "imagery": "screenshots 3 (capture.mjs), product with sample data",
+  "photos": [],
+  "entry": "none beyond one reveal on the map nodes",
+  "fingerprint": "65691a",
+  "sections": [
+   "hero",
+   "map",
+   "switcher",
+   "rows menu",
+   "band close",
+   "footer"
+  ],
+  "signature": "the data map, your files stop at your browser",
+  "waived": [
+   "59",
+   "39b"
+  ],
+  "prompt": "herramienta web gratuita y privada para descubrir quién no te sigue de vuelta en Instagram, TikTok, X y Threads",
+  "date": "2026-11-20"
+ }
+]

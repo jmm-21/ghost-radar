@@ -7,7 +7,6 @@ coverage/
 .env.*.local
 *.log
 .DS_Store
-.hallmark/
 playwright-report/
 test-results/
 .lighthouseci/

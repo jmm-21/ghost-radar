@@ -1,18 +1,11 @@
-/* Hallmark · shape: Showcase-led product page (draw 218d71, Stat-Led swapped) · genre: modern-minimal · theme: Coral (deal 1/3, seed herramienta-web-minimalista-gratuita-3e43·78d1a235·2026-11-20·r0) · redesign: full · job: try
- * hero: Banner · nav: edge-aligned, the wordmark and one link · footer: colophon block · imagery: screenshots 8 (capture.mjs, desktop and phone), the product with sample data · signature: the results screen at full width under the hero, then the data map
- * axes: light/grotesk-sans/warm · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P4 H4 E4 S4 R5 V4 · weakest: S, a centred head could front any tool; the real results screen sits right under it at full width, and the map keeps the privacy argument */
-/* Hallmark · swapped Stat-Led for a showcase, and the search-led bar for an edge-aligned one · the page has no figures to lead with and nothing to search; dropped the theme's stationery and felt textures and its no-fill rule for coral · the user asked for a minimal page in the ghost's orange, with purple as the second colour; later the owner folded the purple back into deeper and lighter oranges */
-/* Hallmark · waive 59 · the showcase sits 40px under the hero, the only gap under 120px · the results screen is the hero's picture and must start on the first screen */
-/* Hallmark · waive 39b · div.drop is a file drop target with role=button, sized to the instructions well beside it · a dropped .zip needs a large target, the real buttons stand 44 to 52px */
-/* Hallmark · redesign: restyle on #analizar (scope app) · the layout stays; the user asked for more life: a peach band, the platforms' own marks (Simple Icons, CC0, monochrome), the chosen network in solid orange, a deep orange for the upload and the steps, tinted figure cards */
-/* Hallmark · dismissed 77 · #analizar is the app screen of the same page, one working section by design; swept with --scope app */
-/* Hallmark · answered F4 · one primary recipe (.btn, orange); .btn--quiet is the outlined secondary on a near-white surface, and the stars are toggles, not actions */
-/* Hallmark · dismissed 49 · the two moment tabs are a title over a line by design; the score buttons wrap inside their own cell */
-/* Hallmark · reworded "resumen.png" to "resultados.png" and "movil.png" · the new shape shows the results screen under the hero and the phone view at the close */
-/* Hallmark · waive 38iii · the accent colours the whole second line of the h1, once, in the hero · the owner asked for more colour and the line stays the same size and weight */
-/* Hallmark · finish-review (#analizar restyle): subagent · 5 findings · 5 resolved (tabs fit the phone, beta badge in the corner, drop zone content at the top, deep orange upload badge, ring beside the figure on phones) */
-/* Hallmark · orange-only restyle (owner: fold the purple into orange, more life, no new colours) · finish-review: subagent · 5 findings · 5 fixed (ghost on phones, firmer highlighter, selected tab back to peach, ghost over the frame corner, privacy tag tinted) */
+/* ghost.radar · estilos de la página
+ *
+ * tokens.css  colores, tipografía y espaciado (las únicas variables de diseño)
+ * base.css    reset, foco visible y movimiento reducido
+ * este archivo, en orden: variables de la página, cabecera, portada (hero, captura,
+ * flujo de datos, listas, cómo funciona, instalar, cierre), herramienta (redes,
+ * instrucciones, subida, resultados, historial), vídeos, avisos, pie, responsive.
+ */
 @import url("./tokens.css");
 @import url("./base.css");
 

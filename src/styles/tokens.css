@@ -12,7 +12,7 @@
   --color-paper: oklch(97% 0.006 55); --color-paper-2: oklch(94.5% 0.007 55); --color-paper-3: oklch(91.5% 0.009 55);
   --color-ink: oklch(21% 0.012 38); --color-ink-2: oklch(29% 0.013 40); --color-muted: oklch(47% 0.013 45);
   --color-rule: oklch(87% 0.009 55); --color-rule-2: oklch(81% 0.011 55);
-  /* brand (the user's): one orange family, from the ghost. Coral's own coral is replaced by request */
+  /* marca: una sola familia de naranjas, la del fantasma */
   --color-accent: oklch(68% 0.2 42); --color-accent-ink: oklch(21% 0.012 38); --color-accent-2: oklch(54% 0.18 40); --color-focus: oklch(50% 0.17 38);
   --color-accent-soft: oklch(95.5% 0.03 50);
   --color-accent-deep: oklch(48% 0.16 38); --color-accent-tint: oklch(92% 0.05 48);
